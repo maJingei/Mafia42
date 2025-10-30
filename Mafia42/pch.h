@@ -8,4 +8,5 @@
 #pragma comment(lib, "Release\\ServerCore.lib")
 #endif // _DEBUG
 
+#include "Defines.h"
 #include "CorePch.h"
