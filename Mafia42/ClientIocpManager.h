@@ -13,6 +13,8 @@ public:
 	
 	virtual bool Begin() override;
 
+	virtual void ProcessPacket(PacketSession* session, char* Buffer, DWORD CurrentLength) override;
+
 public:
 	WCHAR ClientName[BUFSIZE] = {};
 };

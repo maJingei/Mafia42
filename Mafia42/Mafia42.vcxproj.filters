@@ -106,6 +106,9 @@
     <ClInclude Include="StartButton.h">
       <Filter>00.Main\06.UI</Filter>
     </ClInclude>
+    <ClInclude Include="MessageManager.h">
+      <Filter>00.Main\01.Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -161,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="StartButton.cpp">
       <Filter>00.Main\06.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageManager.cpp">
+      <Filter>00.Main\01.Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

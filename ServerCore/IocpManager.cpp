@@ -166,9 +166,29 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 		char Name[BUFSIZE] = {0,};
 		CopyMemory(&clientinfo.NickName, Packet->ConnectBuffer, sizeof(Packet->ConnectBuffer));
 
+		// 관리하는 Sessions에 추가 해놓기
+		mClientSessions.insert(std::pair<PacketSession*, FClientInfo>(session, clientinfo));
+
 		std::cout << "[" << clientinfo.NickName << "]" << "entered room" << endl;
 
-		mClientSessions.insert(std::pair<PacketSession*, FClientInfo>(session, clientinfo));
+		
+		// TODO : 일단 4명으로 인원제한이지만, 다음에는 인원 모이는대로 시작해서 그때 역할 분배할 수 있도록 수정
+		if (mClientSessions.size() >= 4)
+		{
+			// Client가 GAMESTART 패킷을 받기만 하면 되기때문에 Buffer는 그냥 아무거나 담아서 보내기
+			char SendData[10] = "Play";
+			if (ListenSession->CreatePacket(EPACKET_TYPE::GAMESTART, (BYTE*)SendData, 5) == false)
+			{
+				break;
+			}
+			Broadcast(ListenSession->GetPacket());
+		}
+		else
+		{
+			// 4명이 모두 모이기 전엔 System메세지로 Client가 입장했음을 알림
+			Broadcast(Packet);
+
+		}
 		break;
 	}
 	case EPACKET_TYPE::CHAT:

@@ -40,12 +40,20 @@ void StartButton::OnClicked()
 	int32 StrSize = WideCharToMultiByte(CP_ACP, 0, SendBuffer, -1, NULL, 0, NULL, NULL);
 	char* charSendBuffer = new char[StrSize];
 	WideCharToMultiByte(CP_ACP, 0, SendBuffer, -1, charSendBuffer, StrSize, 0, 0);
+
+
+
 	DWORD datalen = 5;
 	if (GET_SINGLE(ClientIocpManager)->GetSession()->CreatePacket(EPACKET_TYPE::LOGIN, (BYTE*)charSendBuffer, StrSize) == false)
 	{
 		return;
 		// TODO : 패킷 생성 실패
 	}
+
+	// 패킷 만들었으니 동적할당했던 char 배열 delete 
+	// TODO : ㅆㅃ 근데 WCHAR 이렇게 써야되는건가 ; 
+	delete charSendBuffer;
+	charSendBuffer = nullptr;
 
 	while (true)
 	{

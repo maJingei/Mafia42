@@ -88,3 +88,23 @@ bool ClientIocpManager::Begin()
 		return false;
 	}
 }
+
+void ClientIocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD CurrentLength)
+{
+	FPacketHeader* header = (FPacketHeader*)Buffer;
+
+	DWORD packetProtocol = (EPACKET_TYPE)::ntohl(header->protocol);
+
+	switch (packetProtocol)
+	{
+	case EPACKET_TYPE::LOGIN:
+	{
+		FPacket* Packet = (FPacket*)Buffer;
+
+		// 
+	}
+	case EPACKET_TYPE::CHAT:
+
+		// TODO : PostMessage 방식을 활용해서 MainThread로 메세지 보내고, WndProc에서 MessageManager가 받아서 PushMessage하기
+	}
+}

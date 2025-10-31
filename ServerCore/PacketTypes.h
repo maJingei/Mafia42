@@ -4,6 +4,7 @@
 enum EPACKET_TYPE
 {
 	LOGIN,
+	GAMESTART,
 	CHAT,
 	VOTE,
 	NONE,
@@ -28,4 +29,5 @@ struct FClientInfo
 {
 	// std::string NickName;
 	char NickName[BUFSIZE] = {};
+	int32 RoleNumber = 0;
 };
