@@ -26,5 +26,6 @@ struct FPacket
 
 struct FClientInfo
 {
-	std::string NickName;
+	// std::string NickName;
+	char NickName[BUFSIZE] = {};
 };

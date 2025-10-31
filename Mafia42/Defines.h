@@ -12,3 +12,8 @@ public:											\
 	}											
 
 #define GET_SINGLE(classname)	classname::GetInstance()
+
+#define WINSIZEX 600
+#define WINSIZEY 800
+
+#define ID_EDIT 100

@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreGlobal.h"
+using namespace std;
 
 #include <winsock2.h>
 #include <windows.h>
@@ -34,4 +35,9 @@
 #include <thread>
 #include <chrono>
 
-using namespace std;
+// FileSystem : C++ 20 설정필요
+#include <format>
+#include <filesystem>
+namespace fs = std::filesystem;
+
+#pragma comment(lib, "msimg32.lib")

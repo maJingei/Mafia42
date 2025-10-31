@@ -4,6 +4,8 @@ enum class KeyType
 {
 	LeftMouse = VK_LBUTTON,
 	RightMouse = VK_RBUTTON,
+	Enter = VK_RETURN,
+
 };
 
 enum class KeyState

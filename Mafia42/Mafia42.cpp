@@ -103,11 +103,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 
    
-   RECT windowRect = { 0,0,800,600 };
+   RECT windowRect = { 0,0,WINSIZEX,WINSIZEY};
    ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false); // 메뉴바를 창 크기 안에 넣지 않겠습니다.
 
    HWND hWnd = CreateWindowW(L"Mafia42", L"Mafia42", WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, WINSIZEX, WINSIZEY, nullptr, nullptr, hInstance, nullptr);
 
    g_hWnd = hWnd;
 

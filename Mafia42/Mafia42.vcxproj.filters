@@ -26,6 +26,18 @@
     <Filter Include="00.Main\03.Network">
       <UniqueIdentifier>{5afd2f13-d839-42d7-aa63-45c0b2de6e1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.Main\02.Scene\Manager">
+      <UniqueIdentifier>{8c70681c-db33-47fd-8470-2097a7396465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Main\04.Resource">
+      <UniqueIdentifier>{c5d816e4-9b4c-4866-a5d6-62d2fffe4824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Main\05.Input">
+      <UniqueIdentifier>{8425b786-343e-441f-930e-cd5d20fc36ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Main\06.UI">
+      <UniqueIdentifier>{78d68c33-d7eb-4b04-81e0-850c4119adb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -43,14 +55,8 @@
     <ClInclude Include="TimeManager.h">
       <Filter>00.Main\01.Manager</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>00.Main\01.Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Defines.h">
       <Filter>00.Main\10.Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>00.Main\01.Manager</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>00.Main\02.Scene</Filter>
@@ -70,18 +76,42 @@
     <ClInclude Include="ClientIocpManager.h">
       <Filter>00.Main\03.Network</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>00.Main\02.Scene\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>00.Main\05.Input</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>00.Main\04.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>00.Main\04.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>00.Main\04.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>00.Main\06.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>00.Main\02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>00.Main\06.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>00.Main\06.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="StartButton.h">
+      <Filter>00.Main\06.UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>00.Main\10.Utils</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>00.Main\01.Manager</Filter>
-    </ClCompile>
     <ClCompile Include="TimeManager.cpp">
-      <Filter>00.Main\01.Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
       <Filter>00.Main\01.Manager</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -101,6 +131,36 @@
     </ClCompile>
     <ClCompile Include="ClientIocpManager.cpp">
       <Filter>00.Main\03.Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>00.Main\02.Scene\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>00.Main\05.Input</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>00.Main\04.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>00.Main\04.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>00.Main\04.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>00.Main\06.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>00.Main\02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>00.Main\06.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00.Main\06.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="StartButton.cpp">
+      <Filter>00.Main\06.UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

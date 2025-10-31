@@ -3,10 +3,12 @@
 #include "LobbyScene.h"
 #include "GameScene.h"
 #include "Scene.h"
+#include "ResourceManager.h"
+#include "TitleScene.h"
 
-void SceneManager::Init()
+void SceneManager::Init(HWND hwnd)
 {
-
+	_hwnd = hwnd;
 }
 
 void SceneManager::Update()
@@ -30,6 +32,8 @@ void SceneManager::Clear()
 	}
 }
 
+
+
 void SceneManager::ChangeScene(SceneType sceneType)
 {
 	if (_sceneType == sceneType)
@@ -39,6 +43,9 @@ void SceneManager::ChangeScene(SceneType sceneType)
 
 	switch (sceneType)
 	{
+	case SceneType::TitleScene:
+		newScene = new TitleScene();
+		break;
 		case SceneType::LobbyScene:
 		newScene = new LobbyScene();
 		break;
@@ -56,5 +63,7 @@ void SceneManager::ChangeScene(SceneType sceneType)
 	_scene = newScene;
 	_sceneType = sceneType;
 
-	newScene->Init();
+	// Game의 Init에서 SceneManager가 Init을 진행하니 ChangeScene에서는 Init을 할 필요가 .. ? 
+	// 근데 그러면 Scene이 Change될 때 Init이 필요함. 
+	newScene->Init(_hwnd);
 }

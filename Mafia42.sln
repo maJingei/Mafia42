@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mafia42", "Mafia42\Mafia42.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerCore", "ServerCore\ServerCore.vcxproj", "{6412C552-CB5A-498F-A029-0670358BAC64}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{6412C552-CB5A-498F-A029-0670358BAC64}.Release|x64.Build.0 = Release|x64
 		{6412C552-CB5A-498F-A029-0670358BAC64}.Release|x86.ActiveCfg = Release|Win32
 		{6412C552-CB5A-498F-A029-0670358BAC64}.Release|x86.Build.0 = Release|Win32
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Debug|x64.ActiveCfg = Debug|x64
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Debug|x64.Build.0 = Debug|x64
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Debug|x86.ActiveCfg = Debug|Win32
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Debug|x86.Build.0 = Debug|Win32
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Release|x64.ActiveCfg = Release|x64
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Release|x64.Build.0 = Release|x64
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Release|x86.ActiveCfg = Release|Win32
+		{CE2B06EB-7442-4ED8-A10E-7FC968AED8D7}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

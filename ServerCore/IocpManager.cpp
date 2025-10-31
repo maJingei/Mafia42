@@ -216,6 +216,8 @@ PacketSession* IocpManager::GetSession()
 
 bool IocpManager::Begin()
 {
+	cout << "Server Start... " << endl;
+
 	StartEventHandle = ::CreateEventW(0, FALSE, FALSE, 0);
 	if (StartEventHandle == NULL)
 	{
@@ -229,6 +231,8 @@ bool IocpManager::Begin()
 
 	ListenSession->Begin();
 
+	cout << "Session Begin ... " << endl;
+
 	// IocpHandle Create
 	IocpHandle = ::CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 	if (!IocpHandle)
@@ -237,11 +241,15 @@ bool IocpManager::Begin()
 		return false;
 	}
 
+	cout << "IOCP Handle Create ... " << endl;
+
 	// session의 socket 생성
 	if (!ListenSession->TCPCreateSocket())
 	{
 		return false;
 	}
+
+	cout << "Socket Create ..." << endl;
 
 	// session의 socket 해당 포트에 bind 및 listen 시작
 	if (!ListenSession->Listen(7777, SOMAXCONN))
@@ -249,11 +257,15 @@ bool IocpManager::Begin()
 		return false;
 	}
 
+	cout << "Start Listen ..." << endl;
+
 	// ListenSession의 socket iocp에 등록
 	if (!RegisterIocpSocket(ListenSession->GetSocket(), /*key값으로 Session넘겨준거임*/(ULONG_PTR)ListenSession))
 	{
 		return false;
 	}
+
+	cout << "RegisterIOCP of Socket ..." << endl;
 
 	// Accept할 session 10개정도만 만들어서 동적할당하고, Accept 연결해준뒤에, 연결성공하면 vector에 pushback
 	for (int32 i = 0; i < 10; i++)

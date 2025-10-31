@@ -5,6 +5,7 @@ class Scene;
 enum class SceneType
 {
 	None,
+	TitleScene,
 	LobbyScene,
 	GameScene,
 };
@@ -14,7 +15,7 @@ class SceneManager
 	DECLARE_SINGLE(SceneManager)
 
 public:
-	void Init();
+	void Init(HWND hwnd);
 	void Update();
 	void Render(HDC hdc);
 
@@ -26,5 +27,6 @@ public:
 private:
 	Scene* _scene;
 	SceneType _sceneType = SceneType::None;
+	HWND _hwnd;
 };
 

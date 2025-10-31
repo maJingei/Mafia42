@@ -1,6 +1,6 @@
 #pragma once
 
-class FPacket;
+struct FPacket;
 
 // Overlapped의 종류입니다.
 enum EIO_TYPE

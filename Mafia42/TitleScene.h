@@ -3,20 +3,21 @@
 
 class UI;
 
-class GameScene : public Scene
+class TitleScene : public Scene
 {
 	using Super = Scene;
 public:
-	GameScene();
-	virtual ~GameScene() override;
+	TitleScene();
+	~TitleScene();
 
 	virtual void Init(HWND hwnd) override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
-private:
-	// Window Edit 창
-	HWND hEditHandle;
+public:
+	HWND hEditHandle = {};
+	// UI 모음입니다.
 	vector<UI*> UIObjects;
+	WCHAR RecvBuffer[BUFSIZE] = {};
 };
 
