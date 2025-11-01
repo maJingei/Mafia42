@@ -17,7 +17,7 @@ public:
 	virtual void HandlePacket(PacketSession* session, DWORD byteTrasnferred);
 	virtual void ProcessPacket(PacketSession* session, char* Buffer, DWORD CurrentLength);
 
-	void Broadcast(FPacket* packet);
+	void Broadcast(PacketSession* session, FPacket* packet);
 
 	PacketSession* GetSession();
 

@@ -3,6 +3,7 @@
 #include "Mafia42.h"
 #include "MessageManager.h"
 #include "ThreadManager.h"
+#include "ClientIocpManager.h"
 #include "Game.h"
 
 #define MAX_LOADSTRING 100
@@ -165,6 +166,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
+        GET_SINGLE(ClientIocpManager)->End();
         break;
 
         // TODO : Client의 WorkerThread에서 Chat패킷을 받으면 PostMessage로 인해 Wndproc을 호출하게 됩니다. 여기서 Message 처리 진행
@@ -176,6 +178,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         // 그리고 채팅창까지 한 칸 올려야됩니다.
         GET_SINGLE(MessageManager)->Update();
+
+        delete[] tempBuffer;
+        tempBuffer = nullptr;
         break;
     }
     default:

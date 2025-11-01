@@ -36,15 +36,21 @@ void ClientIocpManager::WorkerThread()
 				HandlePacket(session, bytesTransferred);
 
 				// 처리가 끝났으니 다음 데이터를 받기 위해 다시 Recv를 겁니다.
-				session->Recv();
+				if (session->Recv() == false)
+				{
+					break;
+				}
 				break;
 
 			case EIO_TYPE::WRITE:
-				HandlePacket(session, bytesTransferred);
+				//HandlePacket(session, bytesTransferred);
 
-				// 처리가 끝났으니 다음 데이터를 받기 위해 다시 Recv를 겁니다.
-				session->Recv();
-				// Send가 완료되었습니다. (보통 클라이언트에선 특별히 할 일 없음)
+				//// 처리가 끝났으니 다음 데이터를 받기 위해 다시 Recv를 겁니다.
+				//if (session->Recv() == false)
+				//{
+				//	break;
+				//}
+				//// Send가 완료되었습니다. (보통 클라이언트에선 특별히 할 일 없음)
 				break;
 			}
 		}
@@ -111,7 +117,13 @@ void ClientIocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWOR
 	case EPACKET_TYPE::CHAT:
 	{
 		FPacket* Packet = (FPacket*)Buffer;
-		::PostMessage(_hwnd, WM_USER_CHAT_RECV, 0, (LPARAM)Packet->ConnectBuffer);
+		DWORD packetLen = ::ntohl(header->packetLength);
+		DWORD dataLen = packetLen - sizeof(FPacketHeader);
+
+		char* chatBuffer = new char[dataLen];
+		CopyMemory(chatBuffer, Packet->ConnectBuffer, dataLen);
+
+		::PostMessage(_hwnd, WM_USER_CHAT_RECV, 0, (LPARAM)chatBuffer);
 		break;
 	}
 		// TODO : PostMessage 방식을 활용해서 MainThread로 메세지 보내고, WndProc에서 MessageManager가 받아서 PushMessage하기

@@ -56,6 +56,11 @@ void StartButton::OnClicked()
 	delete charSendBuffer;
 	charSendBuffer = nullptr;
 
+	if (GET_SINGLE(ClientIocpManager)->RegisterIocpSocket(TempSession->GetSocket(), (ULONG_PTR)TempSession) == false)
+	{
+		// TODO : Error
+	}
+
 	while (true)
 	{
 		if (TempSession->Connect(serverAddr) == FALSE)
@@ -72,8 +77,4 @@ void StartButton::OnClicked()
 		}
 	}
 
-	if (GET_SINGLE(ClientIocpManager)->RegisterIocpSocket(TempSession->GetSocket(), (ULONG_PTR)TempSession) == false)
-	{
-		// TODO : Error
-	}
 }

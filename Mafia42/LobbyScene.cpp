@@ -91,10 +91,11 @@ void LobbyScene::Update()
 			}
 			
 			SetWindowText(hEditHandle, TEXT(""));
+			ZeroMemory(RecvBuffer, BUFSIZE);
 		}
 
 		// 그 후 여기서 따로 Update 진행
-		GET_SINGLE(MessageManager)->Update();
+		// GET_SINGLE(MessageManager)->Update();
 	}
 	for (UI* item : UIObjects)
 	{

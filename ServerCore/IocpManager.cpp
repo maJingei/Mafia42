@@ -80,7 +80,15 @@ void IocpManager::WorkerThread()
 				break;
 			}
 			case EIO_TYPE::WRITE:
-				// write 때는 딱히 할거 없음
+				//// read면 먼저 패킷 처리
+				//HandlePacket(session, bytesTransferred);
+
+				//// 그리고는 다시 recv 하면 끝
+				//if (session->Recv() == false)
+				//{
+				//	break;
+				//}
+				//break;
 				break;
 			}
 		}
@@ -177,16 +185,16 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 		{
 			// Client가 GAMESTART 패킷을 받기만 하면 되기때문에 Buffer는 그냥 아무거나 담아서 보내기
 			char SendData[10] = "Play";
-			if (ListenSession->CreatePacket(EPACKET_TYPE::GAMESTART, (BYTE*)SendData, 5) == false)
+			if (session->CreatePacket(EPACKET_TYPE::GAMESTART, (BYTE*)SendData, 5) == false)
 			{
 				break;
 			}
-			Broadcast(ListenSession->GetPacket());
+			Broadcast(session, session->GetPacket());
 		}
 		else
 		{
 			// 4명이 모두 모이기 전엔 System메세지로 Client가 입장했음을 알림
-			Broadcast(Packet);
+			Broadcast(session, Packet);
 
 		}
 		break;
@@ -194,7 +202,7 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 	case EPACKET_TYPE::CHAT:
 	{
 		FPacket* Packet = (FPacket*)Buffer;
-		Broadcast(Packet);
+		Broadcast(session, Packet);
 
 		break;
 	}
@@ -205,13 +213,20 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 }
 
 
-void IocpManager::Broadcast(FPacket* packet)
+void IocpManager::Broadcast(PacketSession* session, FPacket* packet)
 {
 	const DWORD HeaderSize = sizeof(FPacketHeader);
 	DWORD packetLen = ::ntohl(packet->header.packetLength);
 	DWORD dataLen = packetLen - HeaderSize;
 	DWORD protocol = ::ntohl(packet->header.protocol);
 
+	// 보낸 클라이언트의 이름 찾아서 적용
+	std::string SendClientName = {};
+	auto it = mClientSessions.find(session);
+	if (it != mClientSessions.end())
+	{
+		SendClientName = it->second.NickName;
+	}
 	
 
 	for (auto& ClientSessionPair : mClientSessions)
@@ -219,12 +234,10 @@ void IocpManager::Broadcast(FPacket* packet)
 		PacketSession* targetSession = ClientSessionPair.first;
 		if (protocol == EPACKET_TYPE::CHAT)
 		{
-			std::string text(packet->ConnectBuffer);
-			std::string text1(ClientSessionPair.second.NickName);
-			std::string text2 = ": ";		
-			text = text1 + text2 + text;
+			std::string OriginMessage(packet->ConnectBuffer, dataLen);
+			std::string sendMessage = SendClientName + ": " + OriginMessage;
 
-			if (targetSession->CreatePacket(protocol, (BYTE*)text.c_str(), text.size()) == false)
+			if (targetSession->CreatePacket(protocol, (BYTE*)sendMessage.c_str(), sendMessage.size() + 1) == false)
 			{
 				continue;
 			}
@@ -344,6 +357,11 @@ bool IocpManager::End()
 	mClientSessions.clear();
 
 	::CloseHandle(IocpHandle);
+
+	if (IocpHandle)
+	{
+		::PostQueuedCompletionStatus(IocpHandle, 0, 0, NULL);
+	}
 
 	return true;
 }

@@ -183,6 +183,10 @@ bool NetworkSession::Recv()
 		return false;
 	}
 
+	// Before use RecvBuf, Init RecvBuffer
+	// ZeroMemory(recvBuffer, BUFSIZE);
+	// ZeroMemory(recvBuffer, sizeof(recvBuffer));
+
 	WSABUF wsaBuf;
 	wsaBuf.buf = recvBuffer;
 	wsaBuf.len = BUFSIZE;
@@ -205,6 +209,7 @@ bool NetworkSession::Recv()
 
 		return true;
 	}
+
 
 	return true;
 }
