@@ -44,7 +44,8 @@ void StartButton::OnClicked()
 
 
 	DWORD datalen = 5;
-	if (GET_SINGLE(ClientIocpManager)->GetSession()->CreatePacket(EPACKET_TYPE::LOGIN, (BYTE*)charSendBuffer, StrSize) == false)
+	PacketSession* TempSession = GET_SINGLE(ClientIocpManager)->GetSession();
+	if (TempSession->CreatePacket(EPACKET_TYPE::LOGIN, (BYTE*)charSendBuffer, StrSize) == false)
 	{
 		return;
 		// TODO : 패킷 생성 실패
@@ -57,7 +58,7 @@ void StartButton::OnClicked()
 
 	while (true)
 	{
-		if (GET_SINGLE(ClientIocpManager)->GetSession()->Connect(serverAddr) == FALSE)
+		if (TempSession->Connect(serverAddr) == FALSE)
 		{
 			if (::WSAGetLastError() == WSAEWOULDBLOCK)
 			{
@@ -69,5 +70,10 @@ void StartButton::OnClicked()
 			}
 			break;
 		}
+	}
+
+	if (GET_SINGLE(ClientIocpManager)->RegisterIocpSocket(TempSession->GetSocket(), (ULONG_PTR)TempSession) == false)
+	{
+		// TODO : Error
 	}
 }

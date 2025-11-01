@@ -25,6 +25,12 @@ TitleScene::~TitleScene()
 	}
 
 	UIObjects.clear();
+
+	if (hEditHandle)
+	{
+		::DestroyWindow(hEditHandle);
+		hEditHandle = NULL;
+	}
 }
 
 void TitleScene::Init(HWND hwnd)

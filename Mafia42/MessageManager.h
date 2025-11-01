@@ -16,7 +16,7 @@ public:
 public:
 	void Init(HWND hwnd);
 	void Update();
-	void Render();
+	void Render(HDC hdc);
 
 
 	void PushMessage(const char* message);

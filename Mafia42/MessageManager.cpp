@@ -27,16 +27,17 @@ void MessageManager::Update()
 	}
 }
 
-void MessageManager::Render()
+void MessageManager::Render(HDC hdc)
 {
-	for (auto& msg : MessageDeque)
+	if (MessageDeque.empty() == false)
 	{
-		HDC hdc = ::GetDC(_hwnd);
+		for (auto& msg : MessageDeque)
+		{
+			::SetTextColor(hdc, RGB(255, 255, 255));
+			::SetBkMode(hdc, TRANSPARENT);
 
-		::SetTextColor(hdc, RGB(255, 255, 255));
-		::SetBkMode(hdc, TRANSPARENT);
-
-		DrawText(hdc, msg.Message, -1, &msg.rect, DT_VCENTER | DT_WORDBREAK);
+			::DrawText(hdc, msg.Message, -1, &msg.rect, DT_VCENTER | DT_WORDBREAK);
+		}
 	}
 }
 

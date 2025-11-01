@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "Game.h"
-#include "ClientIocpManager.h"
 #include "TitleScene.h"
 #include "TimeManager.h"
 #include "InputManager.h"
 #include "SceneManager.h"
+#include "ThreadManager.h"
+#include "ClientIocpManager.h"
 #include "ResourceManager.h"
 
 Game::Game()
@@ -37,7 +38,7 @@ void Game::Init(HWND hwnd)
 		return; // WSA 라이브러리 초기화
 	}
 
-	if (GET_SINGLE(ClientIocpManager)->Begin() == false)
+	if (GET_SINGLE(ClientIocpManager)->Init(_hwnd) == false)
 	{
 		// TODO : 네트워크 연결 실패
 	}
@@ -48,6 +49,11 @@ void Game::Init(HWND hwnd)
 	GET_SINGLE(ResourceManager)->Init(hwnd, fs::path(L"D:\\Mafia42\\Resources"));
 
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
+
+	GThreadManager->Launch([=]()
+		{
+			GET_SINGLE(ClientIocpManager)->WorkerThread();
+		});
 }
 
 void Game::Update()

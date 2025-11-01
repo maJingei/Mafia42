@@ -17,3 +17,6 @@ public:											\
 #define WINSIZEY 800
 
 #define ID_EDIT 100
+
+#define WM_USER_CHAT_RECV (WM_USER + 1)
+#define WM_USER_CHAT_CONNECT (WM_USER + 2)

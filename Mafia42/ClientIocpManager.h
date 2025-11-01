@@ -11,11 +11,14 @@ public:
 public:
 	virtual void WorkerThread() override;
 	
-	virtual bool Begin() override;
+	virtual bool Init(HWND hwnd);
 
 	virtual void ProcessPacket(PacketSession* session, char* Buffer, DWORD CurrentLength) override;
 
 public:
 	WCHAR ClientName[BUFSIZE] = {};
+
+	// PostMessage함수를 위한 hwnd
+	HWND _hwnd;
 };
 

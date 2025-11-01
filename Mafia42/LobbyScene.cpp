@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "BackGround.h"
 #include "InputManager.h"
+#include "MessageManager.h"
 #include "ClientIocpManager.h"
 #include "LobbyScene.h"
 
@@ -69,6 +70,7 @@ void LobbyScene::Init(HWND hwnd)
 
 void LobbyScene::Update()
 {
+	// 채팅 시작
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Enter))
 	{
 		::GetWindowText(hEditHandle, RecvBuffer, BUFSIZE);
@@ -76,25 +78,45 @@ void LobbyScene::Update()
 		// 채팅 입력한 버퍼에 글자가 적혀있어야됨
 		if (wcscmp(RecvBuffer, L"") != 0)
 		{
-			// TODO : 글자 적혀있으면 서버에 패킷 만들어서 전송
+			// WCHAR to char
+			int32 StrSize = WideCharToMultiByte(CP_ACP, 0, RecvBuffer, -1, NULL, 0, NULL, NULL);
+			char* charSendBuffer = new char[StrSize];
+			WideCharToMultiByte(CP_ACP, 0, RecvBuffer, -1, charSendBuffer, StrSize, 0, 0);
+
+			// Packet 만들어서 전송
+			PacketSession* TempSession = GET_SINGLE(ClientIocpManager)->GetSession();
+			if (TempSession && TempSession->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)charSendBuffer, StrSize) != false)
+			{
+				TempSession->Send(GET_SINGLE(ClientIocpManager)->GetSession()->GetPacket());
+			}
+			
+			SetWindowText(hEditHandle, TEXT(""));
 		}
+
+		// 그 후 여기서 따로 Update 진행
+		GET_SINGLE(MessageManager)->Update();
 	}
 	for (UI* item : UIObjects)
 	{
 		item->Update();
 	}
+
+	
 }
 
 void LobbyScene::Render(HDC hdc)
 {
+	for (UI* item : UIObjects)
+	{
+		item->Render(hdc);
+	}
+
+	GET_SINGLE(MessageManager)->Render(hdc);
+
 	if (hEditHandle)
 	{
 		// ::InvalidateRect(hEditHandle, NULL, FALSE);
 		::RedrawWindow(hEditHandle, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 	}
 
-	for (UI* item : UIObjects)
-	{
-		item->Render(hdc);
-	}
 }

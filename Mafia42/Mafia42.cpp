@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "framework.h"
 #include "Mafia42.h"
+#include "MessageManager.h"
+#include "ThreadManager.h"
 #include "Game.h"
 
 #define MAX_LOADSTRING 100
@@ -55,6 +57,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             
         }
     }
+
+    GThreadManager->Join();
 
     return (int) msg.wParam;
 }
@@ -162,6 +166,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+
+        // TODO : Client의 WorkerThread에서 Chat패킷을 받으면 PostMessage로 인해 Wndproc을 호출하게 됩니다. 여기서 Message 처리 진행
+    case WM_USER_CHAT_RECV:
+    {
+        // 해당 case가 호출되는 시점은 모든 싱글톤 Manager들이 Init이 된 후이므로 Instance를 사용해도 보장받을 수 있는 시점입니다.
+        const char* tempBuffer = (const char*)lParam;
+        GET_SINGLE(MessageManager)->PushMessage(tempBuffer);
+
+        // 그리고 채팅창까지 한 칸 올려야됩니다.
+        GET_SINGLE(MessageManager)->Update();
+        break;
+    }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

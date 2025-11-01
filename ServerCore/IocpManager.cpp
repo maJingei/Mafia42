@@ -211,15 +211,31 @@ void IocpManager::Broadcast(FPacket* packet)
 	DWORD packetLen = ::ntohl(packet->header.packetLength);
 	DWORD dataLen = packetLen - HeaderSize;
 	DWORD protocol = ::ntohl(packet->header.protocol);
-	BYTE* data = (BYTE*)packet->ConnectBuffer;
 
-	for (auto ClientSessionPair : mClientSessions)
+	
+
+	for (auto& ClientSessionPair : mClientSessions)
 	{
 		PacketSession* targetSession = ClientSessionPair.first;
-
-		if (targetSession->CreatePacket(protocol, data, dataLen) == false)
+		if (protocol == EPACKET_TYPE::CHAT)
 		{
-			continue;
+			std::string text(packet->ConnectBuffer);
+			std::string text1(ClientSessionPair.second.NickName);
+			std::string text2 = ": ";		
+			text = text1 + text2 + text;
+
+			if (targetSession->CreatePacket(protocol, (BYTE*)text.c_str(), text.size()) == false)
+			{
+				continue;
+			}
+		}
+		else
+		{
+			BYTE* tempPacket = (BYTE*)packet->ConnectBuffer;
+			if (targetSession->CreatePacket(protocol, tempPacket, dataLen) == false)
+			{
+				continue;
+			}
 		}
 
 		if (targetSession->Send(targetSession->GetPacket()) == false)
