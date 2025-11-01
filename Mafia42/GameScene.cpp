@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ResourceManager.h"
+#include "MessageManager.h"
 #include "BackGround.h"
 #include "GameScene.h"
 
@@ -15,7 +16,7 @@ void GameScene::Init(HWND hwnd)
 {
 	Super::Init(hwnd);
 
-	GET_SINGLE(ResourceManager)->LoadTexture(L"GameBackGround", L"Sprite\\Map\\LobbyBackGround.bmp");
+	GET_SINGLE(ResourceManager)->LoadTexture(L"GameBackGround", L"Sprite\\Map\\GameBackGround.bmp");
 
 	GET_SINGLE(ResourceManager)->CreateSprite(L"GameBackGround", GET_SINGLE(ResourceManager)->GetTexture(L"GameBackGround"));
 
@@ -49,6 +50,8 @@ void GameScene::Init(HWND hwnd)
 
 void GameScene::Update()
 {
+	ChatUpdate();
+
 	for (UI* item : UIObjects)
 	{
 		item->Update();
@@ -57,14 +60,16 @@ void GameScene::Update()
 
 void GameScene::Render(HDC hdc)
 {
+	for (UI* item : UIObjects)
+	{
+		item->Render(hdc);
+	}
+
+	GET_SINGLE(MessageManager)->Render(hdc);
+
 	if (hEditHandle)
 	{
 		// ::InvalidateRect(hEditHandle, NULL, FALSE);
 		::RedrawWindow(hEditHandle, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
-	}
-
-	for (UI* item : UIObjects)
-	{
-		item->Render(hdc);
 	}
 }

@@ -33,12 +33,17 @@ void MessageManager::Render(HDC hdc)
 	{
 		for (auto& msg : MessageDeque)
 		{
-			::SetTextColor(hdc, RGB(255, 255, 255));
+			::SetTextColor(hdc, msg.color);
 			::SetBkMode(hdc, TRANSPARENT);
 
 			::DrawText(hdc, msg.Message, -1, &msg.rect, DT_VCENTER | DT_WORDBREAK);
 		}
 	}
+	
+	// 시간은 따로
+	::SetTextColor(hdc, TimeMessage.color);
+	::SetBkMode(hdc, TRANSPARENT);
+	::DrawText(hdc, TimeMessage.Message, -1, &TimeMessage.rect, DT_VCENTER | DT_WORDBREAK);
 }
 
 void MessageManager::PushMessage(const char* message)
@@ -48,6 +53,7 @@ void MessageManager::PushMessage(const char* message)
 	msg.rect.bottom = 700;
 	msg.rect.left = 20;
 	msg.rect.right = 480;
+	msg.color = RGB(255, 255, 255);
 
 	WCHAR* buffer;
 	int32 charsize = MultiByteToWideChar(CP_ACP, 0, message, -1, NULL, NULL);
@@ -59,4 +65,25 @@ void MessageManager::PushMessage(const char* message)
 	buffer = nullptr;
 
 	MessageDeque.push_back(msg);
+}
+
+void MessageManager::PushTimeMessage(const char* timemessage)
+{
+	FMessage msg;
+	msg.rect.top = 100;
+	msg.rect.bottom = 200;
+	msg.rect.left = 250;
+	msg.rect.right = 450;
+	msg.color = RGB(255,0,0);
+
+	WCHAR* buffer;
+	int32 charsize = MultiByteToWideChar(CP_ACP, 0, timemessage, -1, NULL, NULL);
+	buffer = new WCHAR[charsize];
+	MultiByteToWideChar(CP_ACP, 0, timemessage, strlen(timemessage) + 1, buffer, charsize);
+	wcscpy_s(msg.Message, charsize, buffer);
+
+	delete buffer;
+	buffer = nullptr;
+
+	TimeMessage = msg;
 }

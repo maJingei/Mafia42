@@ -21,6 +21,8 @@ public:
 
 	void Clear();
 
+	void UpdateControl();
+
 public:
 	void ChangeScene(SceneType sceneType);
 

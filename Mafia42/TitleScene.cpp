@@ -114,3 +114,12 @@ void TitleScene::Render(HDC hdc)
 	for (UI* ui : UIObjects)
 		ui->Render(hdc);
 }
+
+void TitleScene::UpdateControl()
+{
+	if (hEditHandle)
+	{
+		// ::InvalidateRect(hEditHandle, NULL, FALSE);
+		::RedrawWindow(hEditHandle, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+	}
+}

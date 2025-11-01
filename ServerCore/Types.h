@@ -23,7 +23,6 @@ using LockGuard = std::lock_guard<std::mutex>;
 template<typename T>
 using Deque = std::deque<T>;
 
-#define BUFSIZE 1024
 
 
 struct Vector

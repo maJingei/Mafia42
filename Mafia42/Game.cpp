@@ -16,6 +16,7 @@ Game::~Game()
 {
 	GET_SINGLE(SceneManager)->Clear();
 	GET_SINGLE(ResourceManager)->Clear();
+	
 
 	_CrtDumpMemoryLeaks();
 }
@@ -50,7 +51,7 @@ void Game::Init(HWND hwnd)
 
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
 
-	GThreadManager->Launch([=]()
+	GThreadManager->Launch([]()
 		{
 			GET_SINGLE(ClientIocpManager)->WorkerThread();
 		});
@@ -70,4 +71,6 @@ void Game::Render()
 	// Double Buffering
 	::BitBlt(_hdc, 0, 0, _rect.right, _rect.bottom, hdcBack, 0, 0, SRCCOPY); // 비트 블릿 : 고속 복사
 	::PatBlt(hdcBack, 0, 0, _rect.right, _rect.bottom, WHITENESS); // backBuffer 밀어주기
+
+	GET_SINGLE(SceneManager)->UpdateControl();
 }

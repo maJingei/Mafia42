@@ -1,14 +1,7 @@
 #include "pch.h"
 #include "IocpManager.h"
+#include "GameManager.h"
 #include "ThreadManager.h"
-
-
-IocpManager::IocpManager()
-{
-	IocpHandle = NULL;
-	StartEventHandle = NULL;
-	ListenSession = nullptr;
-}
 
 IocpManager::~IocpManager()
 {
@@ -80,15 +73,7 @@ void IocpManager::WorkerThread()
 				break;
 			}
 			case EIO_TYPE::WRITE:
-				//// read면 먼저 패킷 처리
-				//HandlePacket(session, bytesTransferred);
-
-				//// 그리고는 다시 recv 하면 끝
-				//if (session->Recv() == false)
-				//{
-				//	break;
-				//}
-				//break;
+				// Write에서 딱히 할 거 없음
 				break;
 			}
 		}
@@ -189,12 +174,16 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 			{
 				break;
 			}
-			Broadcast(session, session->GetPacket());
+
+			// 4명이 다 모였다면, GameThread의 EventHandle을 Signaled 상태로 !
+			GET_SINGLE(GameManager)->SetGameEvent();
+
+			ChatBroadcast(session, session->GetPacket());
 		}
 		else
 		{
 			// 4명이 모두 모이기 전엔 System메세지로 Client가 입장했음을 알림
-			Broadcast(session, Packet);
+			ChatBroadcast(session, Packet);
 
 		}
 		break;
@@ -202,7 +191,7 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 	case EPACKET_TYPE::CHAT:
 	{
 		FPacket* Packet = (FPacket*)Buffer;
-		Broadcast(session, Packet);
+		ChatBroadcast(session, Packet);
 
 		break;
 	}
@@ -213,7 +202,7 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 }
 
 
-void IocpManager::Broadcast(PacketSession* session, FPacket* packet)
+void IocpManager::ChatBroadcast(PacketSession* session, FPacket* packet)
 {
 	const DWORD HeaderSize = sizeof(FPacketHeader);
 	DWORD packetLen = ::ntohl(packet->header.packetLength);
@@ -258,6 +247,87 @@ void IocpManager::Broadcast(PacketSession* session, FPacket* packet)
 	}
 }
 
+void IocpManager::TimeBroadcast(const BYTE* data, DWORD datalen)
+{
+	for (auto& ClientSession : mClientSessions)
+	{
+		PacketSession* targetSession = ClientSession.first;
+
+		if (targetSession->CreatePacket(EPACKET_TYPE::TIME, data, datalen) == false)
+		{
+			continue;
+		}
+
+		if (targetSession->Send(targetSession->GetPacket()))
+		{
+			continue;
+		}
+	}
+}
+
+void IocpManager::NetworkShuffleRole()
+{
+	std::random_device rd;
+	std::mt19937 generator(rd());
+
+	// Roles 선언해서 무작위로 섞기.
+	vector<EPlayerRole> Roles{ EPlayerRole::HUMAN, EPlayerRole::HUMAN, EPlayerRole::POLICE, EPlayerRole::MAFIA };
+	std::shuffle(Roles.begin(), Roles.end(), generator);
+	int32 index = 0;
+
+	for (auto& session : mClientSessions)
+	{
+		session.second.RoleNumber = Roles[index];
+		index++;
+	}
+
+	for (auto& session : mClientSessions)
+	{
+		switch (session.second.RoleNumber)
+		{
+		case EPlayerRole::HUMAN:
+		{
+			std::string RoleMessage = "당신은 시민 입니다.";
+			if (session.first->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)RoleMessage.c_str(), RoleMessage.size() + 1) == false)
+			{
+				break;
+			}
+			if (session.first->Send(session.first->GetPacket()) == false)
+			{
+				break;
+			}
+			break;
+		}
+		case EPlayerRole::MAFIA:
+		{
+			std::string RoleMessage = "당신은 마피아 입니다.";
+			if (session.first->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)RoleMessage.c_str(), RoleMessage.size() + 1) == false)
+			{
+				break;
+			}
+			if (session.first->Send(session.first->GetPacket()) == false)
+			{
+				break;
+			}
+			break;
+		}
+		case EPlayerRole::POLICE:
+		{
+			std::string RoleMessage = "당신은 경찰 입니다.";
+			if (session.first->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)RoleMessage.c_str(), RoleMessage.size() + 1) == false)
+			{
+				break;
+			}
+			if (session.first->Send(session.first->GetPacket()) == false)
+			{
+				break;
+			}
+			break;
+		}
+		}
+	}
+}
+
 PacketSession* IocpManager::GetSession()
 {
 	return ListenSession;
@@ -265,6 +335,10 @@ PacketSession* IocpManager::GetSession()
 
 bool IocpManager::Begin()
 {
+	IocpHandle = NULL;
+	StartEventHandle = NULL;
+	ListenSession = nullptr;
+
 	cout << "Server Start... " << endl;
 
 	StartEventHandle = ::CreateEventW(0, FALSE, FALSE, 0);
@@ -332,13 +406,17 @@ bool IocpManager::Begin()
 		}
 	}
 
-	for (int32 i = 0; i < 1; i++)
-	{
-		GThreadManager->Launch([=]()
-			{
-				IocpManager::WorkerThread();
-			});
-	}
+	// Iocp의 WorkerThread
+	GThreadManager->Launch([=]()
+		{
+			IocpManager::WorkerThread();
+		});
+	
+	// GameThread
+	GThreadManager->Launch([]()
+		{
+			GET_SINGLE(GameManager)->GameThread();
+		});
 
 	GThreadManager->Join();
 

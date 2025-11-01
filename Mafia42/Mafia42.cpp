@@ -4,6 +4,7 @@
 #include "MessageManager.h"
 #include "ThreadManager.h"
 #include "ClientIocpManager.h"
+#include "SceneManager.h"
 #include "Game.h"
 
 #define MAX_LOADSTRING 100
@@ -164,13 +165,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EndPaint(hWnd, &ps);
         }
         break;
+
+    case WM_ERASEBKGND:
+    {
+        return 1;
+        break;
+    }
     case WM_DESTROY:
         PostQuitMessage(0);
         GET_SINGLE(ClientIocpManager)->End();
         break;
 
         // TODO : Client의 WorkerThread에서 Chat패킷을 받으면 PostMessage로 인해 Wndproc을 호출하게 됩니다. 여기서 Message 처리 진행
-    case WM_USER_CHAT_RECV:
+    case WM_USER_TIME:
+    {
+        const char* tempBuffer = (const char*)lParam;
+        GET_SINGLE(MessageManager)->PushTimeMessage(tempBuffer);
+
+        // 채팅창 한칸 올릴 필요 없음
+
+        delete[] tempBuffer;
+        tempBuffer = nullptr;
+        break;
+    }
+    case WM_USER_CHAT_RECV: // 채팅 받았을 때 MessagePush 진행
     {
         // 해당 case가 호출되는 시점은 모든 싱글톤 Manager들이 Init이 된 후이므로 Instance를 사용해도 보장받을 수 있는 시점입니다.
         const char* tempBuffer = (const char*)lParam;
@@ -183,6 +201,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         tempBuffer = nullptr;
         break;
     }
+    case WM_USER_GAME_START: // 게임이 시작되면 GameScene으로 변경 !
+    {
+        GET_SINGLE(SceneManager)->ChangeScene(SceneType::GameScene);
+        break;
+    }
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

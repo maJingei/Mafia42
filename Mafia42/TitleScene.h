@@ -14,6 +14,8 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
+	virtual void UpdateControl() override;
+
 public:
 	HWND hEditHandle = {};
 	// UI 모음입니다.

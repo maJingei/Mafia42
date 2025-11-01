@@ -1,6 +1,8 @@
 #pragma once
 #include "CoreGlobal.h"
 using namespace std;
+#include "Defines.h"
+#include "Enums.h"
 
 #include <winsock2.h>
 #include <windows.h>
@@ -10,6 +12,7 @@ using namespace std;
 #pragma comment (lib, "mswsock.lib")
 
 // STL
+#include <algorithm>
 #include <functional>
 #include <vector>
 #include <list>
@@ -22,6 +25,7 @@ using namespace std;
 #include <future>
 #include <iostream>
 #include <string>
+#include <random>
 
 // Utils
 #include "Types.h"

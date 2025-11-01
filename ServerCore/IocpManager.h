@@ -5,7 +5,7 @@ class PacketSesion;
 class IocpManager
 {
 public:
-	IocpManager();
+	DECLARE_SINGLE(IocpManager)
 	virtual ~IocpManager();
 
 	virtual void WorkerThread();
@@ -17,7 +17,9 @@ public:
 	virtual void HandlePacket(PacketSession* session, DWORD byteTrasnferred);
 	virtual void ProcessPacket(PacketSession* session, char* Buffer, DWORD CurrentLength);
 
-	void Broadcast(PacketSession* session, FPacket* packet);
+	void ChatBroadcast(PacketSession* session, FPacket* packet);
+	void TimeBroadcast(const BYTE* data, DWORD datalen);
+	void NetworkShuffleRole();
 
 	PacketSession* GetSession();
 

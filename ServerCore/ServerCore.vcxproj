@@ -153,6 +153,9 @@
   <ItemGroup>
     <ClInclude Include="CoreGlobal.h" />
     <ClInclude Include="CorePch.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="IocpManager.h" />
     <ClInclude Include="NetworkSession.h" />
     <ClInclude Include="PacketSession.h" />
@@ -164,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="CoreGlobal.cpp" />
     <ClCompile Include="CorePch.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="IocpManager.cpp" />
     <ClCompile Include="NetworkSession.cpp" />
     <ClCompile Include="PacketSession.cpp" />

@@ -158,7 +158,6 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ClientIocpManager.h" />
-    <ClInclude Include="Defines.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScene.h" />

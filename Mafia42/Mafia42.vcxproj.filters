@@ -55,9 +55,6 @@
     <ClInclude Include="TimeManager.h">
       <Filter>00.Main\01.Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Defines.h">
-      <Filter>00.Main\10.Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>00.Main\02.Scene</Filter>
     </ClInclude>

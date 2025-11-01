@@ -14,11 +14,9 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
+	virtual void UpdateControl() override;
+
 private:
-	HWND hEditHandle;
-
-	WCHAR RecvBuffer[BUFSIZE] = {};
-
 	vector<UI*> UIObjects;
 };
 

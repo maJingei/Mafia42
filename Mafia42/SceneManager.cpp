@@ -32,7 +32,13 @@ void SceneManager::Clear()
 	}
 }
 
-
+void SceneManager::UpdateControl()
+{
+	if (_scene)
+	{
+		_scene->UpdateControl();
+	}
+}
 
 void SceneManager::ChangeScene(SceneType sceneType)
 {
