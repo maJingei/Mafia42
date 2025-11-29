@@ -17,10 +17,10 @@ public:
 protected:
 	HWND _hwnd = {};
 
-	// WindowÃ¢ EditÃ¢À» À§ÇÑ Handle
+	// Windowì°½ Editì°½ì„ ìœ„í•œ Handle
 	HWND hEditHandle;
 
-	// Ã¤ÆÃ ¹Ş¾ÆÁÙ recvBuffer
+	// ì±„íŒ… ë°›ì•„ì¤„ recvBuffer
 	WCHAR RecvBuffer[BUFSIZE] = {};
 };
 

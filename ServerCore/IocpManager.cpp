@@ -32,11 +32,11 @@ void IocpManager::WorkerThread()
 
 		if (result == TRUE)
 		{
-			// NetworkSessionÀÇ Begin¿¡¼­ thisÆ÷ÀÎÅÍ·Î ÃÊ±âÈ­ ½ÃÄÑÁá±â ¶§¹®¿¡ °¡´ÉÇÑ Ä³½ºÆÃ
-			// ±×·³ ¸¸¾à client¿Í acceptµÇ¾î¼­ GetQueued·Î IOCP¿¡°Ô Á¤º¸°¡ ¿Ô´Ù°í Ä¡¸é,
-			// networkSessionÀ¸·Î Ä³½ºÆÃÇÑ sessionÀº client¿¡°Ô¼­ ¿Â sessionÀÌ°í, 
-			// ±× ¾È¿¡ Æ÷ÇÔµÇ¾îÀÖ´Â socketÀº clientsocketÀÏ °Í ÀÔ´Ï´Ù.
-			// - AcceptOverlapped ÀÚÃ¼°¡ client ¿¬°áÀ» À§ÇÑ Session²¨ ÀÔ´Ï´Ù.
+			// NetworkSessionì˜ Beginì—ì„œ thisí¬ì¸í„°ë¡œ ì´ˆê¸°í™” ì‹œì¼œì¤¬ê¸° ë•Œë¬¸ì— ê°€ëŠ¥í•œ ìºìŠ¤íŒ…
+			// ê·¸ëŸ¼ ë§Œì•½ clientì™€ acceptë˜ì–´ì„œ GetQueuedë¡œ IOCPì—ê²Œ ì •ë³´ê°€ ì™”ë‹¤ê³  ì¹˜ë©´,
+			// networkSessionìœ¼ë¡œ ìºìŠ¤íŒ…í•œ sessionì€ clientì—ê²Œì„œ ì˜¨ sessionì´ê³ , 
+			// ê·¸ ì•ˆì— í¬í•¨ë˜ì–´ìˆëŠ” socketì€ clientsocketì¼ ê²ƒ ì…ë‹ˆë‹¤.
+			// - AcceptOverlapped ìì²´ê°€ client ì—°ê²°ì„ ìœ„í•œ Sessionêº¼ ì…ë‹ˆë‹¤.
 			PacketSession* session = (PacketSession*)overlappedEx->Object;
 			
 
@@ -44,16 +44,16 @@ void IocpManager::WorkerThread()
 			{
 			case EIO_TYPE::ACCEPT:
 			{
-				// ±×·³ ¸ÕÀú Iocp¿¡ µî·Ï
+				// ê·¸ëŸ¼ ë¨¼ì € Iocpì— ë“±ë¡
 				if (!RegisterIocpSocket(session->GetSocket(), (ULONG_PTR)session))
 				{
 					break;
 				}
 
-				// ±× ´ÙÀ½ ÆĞÅ¶ ÇØ¼®ÇÏ°í, ±×¿¡¸Â°Ô Process±îÁö ÁøÇà
+				// ê·¸ ë‹¤ìŒ íŒ¨í‚· í•´ì„í•˜ê³ , ê·¸ì—ë§ê²Œ Processê¹Œì§€ ì§„í–‰
 				HandlePacket(session, bytesTransferred);
 
-				// ±×¸®°í ´Ù½Ã Recv °É±â
+				// ê·¸ë¦¬ê³  ë‹¤ì‹œ Recv ê±¸ê¸°
 				if (session->Recv() == false)
 				{
 					break;
@@ -62,10 +62,10 @@ void IocpManager::WorkerThread()
 			}
 			case EIO_TYPE::READ:
 			{
-				// read¸é ¸ÕÀú ÆĞÅ¶ Ã³¸®
+				// readë©´ ë¨¼ì € íŒ¨í‚· ì²˜ë¦¬
 				HandlePacket(session, bytesTransferred);
 
-				// ±×¸®°í´Â ´Ù½Ã recv ÇÏ¸é ³¡
+				// ê·¸ë¦¬ê³ ëŠ” ë‹¤ì‹œ recv í•˜ë©´ ë
 				if (session->Recv() == false)
 				{
 					break;
@@ -73,7 +73,7 @@ void IocpManager::WorkerThread()
 				break;
 			}
 			case EIO_TYPE::WRITE:
-				// Write¿¡¼­ µüÈ÷ ÇÒ °Å ¾øÀ½
+				// Writeì—ì„œ ë”±íˆ í•  ê±° ì—†ìŒ
 				break;
 			}
 		}
@@ -82,7 +82,7 @@ void IocpManager::WorkerThread()
 
 bool IocpManager::RegisterIocpSocket(SOCKET socket, ULONG_PTR completionKey)
 {
-	// Àü´ŞµÈ SocketÀ» cp¿¡ µî·ÏÇÕ´Ï´Ù.
+	// ì „ë‹¬ëœ Socketì„ cpì— ë“±ë¡í•©ë‹ˆë‹¤.
 	IocpHandle = CreateIoCompletionPort((HANDLE)socket, IocpHandle, completionKey, 0);
 
 	if (!IocpHandle)
@@ -110,32 +110,32 @@ void IocpManager::HandlePacket(PacketSession* session, DWORD byteTrasnferred)
 		DWORD CurrentSize = session->GetDataSize();
 		if (CurrentSize <= HeaderSize)
 		{
-			break; // Àü´ŞµÈ µ¥ÀÌÅÍ Å©±â°¡ Çì´õº¸´Ù ÀÛÀ¸¸é ´Ù ¾È¿È
+			break; // ì „ë‹¬ëœ ë°ì´í„° í¬ê¸°ê°€ í—¤ë”ë³´ë‹¤ ì‘ìœ¼ë©´ ë‹¤ ì•ˆì˜´
 		}
 
-		// PacketHeader°¡ PacketÀÇ offsetÀÇ ¸Ç À§¿¡ ÀÖ¾ú±â ¶§¹®¿¡ Ä³½ºÆÃ °¡´É
+		// PacketHeaderê°€ Packetì˜ offsetì˜ ë§¨ ìœ„ì— ìˆì—ˆê¸° ë•Œë¬¸ì— ìºìŠ¤íŒ… ê°€ëŠ¥
 		FPacketHeader* header = (FPacketHeader*)tempBuffer;
-		int32 tempPacketLen = ::ntohl(header->packetLength); // ³×Æ®¿öÅ© ¿£µğ¾È ¸ÂÃçÁÜ
+		int32 tempPacketLen = ::ntohl(header->packetLength); // ë„¤íŠ¸ì›Œí¬ ì—”ë””ì•ˆ ë§ì¶°ì¤Œ
 
 		if (tempPacketLen <= 0)
 		{
-			break; // packetLenÀÌ 0º¸´Ù ÀÛÀ¸¸é ¹®Á¦ÀÖÀ½
+			break; // packetLenì´ 0ë³´ë‹¤ ì‘ìœ¼ë©´ ë¬¸ì œìˆìŒ
 		}
 
 		if (CurrentSize < tempPacketLen)
 		{
-			// Àü´ŞµÈ DataÀÇ size°¡ PacketÀÇ Lenº¸´Ù ÀÛÀ¸¸é ¹®Á¦ÀÖÀ½
+			// ì „ë‹¬ëœ Dataì˜ sizeê°€ Packetì˜ Lenë³´ë‹¤ ì‘ìœ¼ë©´ ë¬¸ì œìˆìŒ
 			break;
 		}
 
-		// ¿©±â±îÁö ¿À¸é ÇÏ³ªÀÇ ÆĞÅ¶Àº º¸ÀåµÇ´Ï ÆĞÅ¶ Ã³¸®
+		// ì—¬ê¸°ê¹Œì§€ ì˜¤ë©´ í•˜ë‚˜ì˜ íŒ¨í‚·ì€ ë³´ì¥ë˜ë‹ˆ íŒ¨í‚· ì²˜ë¦¬
 		ProcessPacket(session, tempBuffer, CurrentSize);
 
 		DWORD remainSize = CurrentSize - tempPacketLen;
 
 		if (remainSize > 0)
 		{
-			// ³²Àº Å©±â¸¸Å­À» Ã³¸®ÇÑ ÆĞÅ¶ ÈÄºÎÅÍ Ã³À½À¸·Î ¿Å°ÜÁÜ
+			// ë‚¨ì€ í¬ê¸°ë§Œí¼ì„ ì²˜ë¦¬í•œ íŒ¨í‚· í›„ë¶€í„° ì²˜ìŒìœ¼ë¡œ ì˜®ê²¨ì¤Œ
 			::memmove(tempBuffer, tempBuffer + tempPacketLen, remainSize); 
 		}
 
@@ -159,30 +159,30 @@ void IocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWORD Curr
 		char Name[BUFSIZE] = {0,};
 		CopyMemory(&clientinfo.NickName, Packet->ConnectBuffer, sizeof(Packet->ConnectBuffer));
 
-		// °ü¸®ÇÏ´Â Sessions¿¡ Ãß°¡ ÇØ³õ±â
+		// ê´€ë¦¬í•˜ëŠ” Sessionsì— ì¶”ê°€ í•´ë†“ê¸°
 		mClientSessions.insert(std::pair<PacketSession*, FClientInfo>(session, clientinfo));
 
 		std::cout << "[" << clientinfo.NickName << "]" << "entered room" << endl;
 
 		
-		// TODO : ÀÏ´Ü 4¸íÀ¸·Î ÀÎ¿øÁ¦ÇÑÀÌÁö¸¸, ´ÙÀ½¿¡´Â ÀÎ¿ø ¸ğÀÌ´Â´ë·Î ½ÃÀÛÇØ¼­ ±×¶§ ¿ªÇÒ ºĞ¹èÇÒ ¼ö ÀÖµµ·Ï ¼öÁ¤
+		// TODO : ì¼ë‹¨ 4ëª…ìœ¼ë¡œ ì¸ì›ì œí•œì´ì§€ë§Œ, ë‹¤ìŒì—ëŠ” ì¸ì› ëª¨ì´ëŠ”ëŒ€ë¡œ ì‹œì‘í•´ì„œ ê·¸ë•Œ ì—­í•  ë¶„ë°°í•  ìˆ˜ ìˆë„ë¡ ìˆ˜ì •
 		if (mClientSessions.size() >= 4)
 		{
-			// Client°¡ GAMESTART ÆĞÅ¶À» ¹Ş±â¸¸ ÇÏ¸é µÇ±â¶§¹®¿¡ Buffer´Â ±×³É ¾Æ¹«°Å³ª ´ã¾Æ¼­ º¸³»±â
+			// Clientê°€ GAMESTART íŒ¨í‚·ì„ ë°›ê¸°ë§Œ í•˜ë©´ ë˜ê¸°ë•Œë¬¸ì— BufferëŠ” ê·¸ëƒ¥ ì•„ë¬´ê±°ë‚˜ ë‹´ì•„ì„œ ë³´ë‚´ê¸°
 			char SendData[10] = "Play";
 			if (session->CreatePacket(EPACKET_TYPE::GAMESTART, (BYTE*)SendData, 5) == false)
 			{
 				break;
 			}
 
-			// 4¸íÀÌ ´Ù ¸ğ¿´´Ù¸é, GameThreadÀÇ EventHandleÀ» Signaled »óÅÂ·Î !
+			// 4ëª…ì´ ë‹¤ ëª¨ì˜€ë‹¤ë©´, GameThreadì˜ EventHandleì„ Signaled ìƒíƒœë¡œ !
 			GET_SINGLE(GameManager)->SetGameEvent();
 
 			ChatBroadcast(session, session->GetPacket());
 		}
 		else
 		{
-			// 4¸íÀÌ ¸ğµÎ ¸ğÀÌ±â Àü¿£ System¸Ş¼¼Áö·Î Client°¡ ÀÔÀåÇßÀ½À» ¾Ë¸²
+			// 4ëª…ì´ ëª¨ë‘ ëª¨ì´ê¸° ì „ì—” Systemë©”ì„¸ì§€ë¡œ Clientê°€ ì…ì¥í–ˆìŒì„ ì•Œë¦¼
 			ChatBroadcast(session, Packet);
 
 		}
@@ -209,7 +209,7 @@ void IocpManager::ChatBroadcast(PacketSession* session, FPacket* packet)
 	DWORD dataLen = packetLen - HeaderSize;
 	DWORD protocol = ::ntohl(packet->header.protocol);
 
-	// º¸³½ Å¬¶óÀÌ¾ğÆ®ÀÇ ÀÌ¸§ Ã£¾Æ¼­ Àû¿ë
+	// ë³´ë‚¸ í´ë¼ì´ì–¸íŠ¸ì˜ ì´ë¦„ ì°¾ì•„ì„œ ì ìš©
 	std::string SendClientName = {};
 	auto it = mClientSessions.find(session);
 	if (it != mClientSessions.end())
@@ -270,7 +270,7 @@ void IocpManager::NetworkShuffleRole()
 	std::random_device rd;
 	std::mt19937 generator(rd());
 
-	// Roles ¼±¾ğÇØ¼­ ¹«ÀÛÀ§·Î ¼¯±â.
+	// Roles ì„ ì–¸í•´ì„œ ë¬´ì‘ìœ„ë¡œ ì„ê¸°.
 	vector<EPlayerRole> Roles{ EPlayerRole::HUMAN, EPlayerRole::HUMAN, EPlayerRole::POLICE, EPlayerRole::MAFIA };
 	std::shuffle(Roles.begin(), Roles.end(), generator);
 	int32 index = 0;
@@ -287,7 +287,7 @@ void IocpManager::NetworkShuffleRole()
 		{
 		case EPlayerRole::HUMAN:
 		{
-			std::string RoleMessage = "´ç½ÅÀº ½Ã¹Î ÀÔ´Ï´Ù.";
+			std::string RoleMessage = "ë‹¹ì‹ ì€ ì‹œë¯¼ ì…ë‹ˆë‹¤.";
 			if (session.first->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)RoleMessage.c_str(), RoleMessage.size() + 1) == false)
 			{
 				break;
@@ -300,7 +300,7 @@ void IocpManager::NetworkShuffleRole()
 		}
 		case EPlayerRole::MAFIA:
 		{
-			std::string RoleMessage = "´ç½ÅÀº ¸¶ÇÇ¾Æ ÀÔ´Ï´Ù.";
+			std::string RoleMessage = "ë‹¹ì‹ ì€ ë§ˆí”¼ì•„ ì…ë‹ˆë‹¤.";
 			if (session.first->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)RoleMessage.c_str(), RoleMessage.size() + 1) == false)
 			{
 				break;
@@ -313,7 +313,7 @@ void IocpManager::NetworkShuffleRole()
 		}
 		case EPlayerRole::POLICE:
 		{
-			std::string RoleMessage = "´ç½ÅÀº °æÂû ÀÔ´Ï´Ù.";
+			std::string RoleMessage = "ë‹¹ì‹ ì€ ê²½ì°° ì…ë‹ˆë‹¤.";
 			if (session.first->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)RoleMessage.c_str(), RoleMessage.size() + 1) == false)
 			{
 				break;
@@ -349,7 +349,7 @@ bool IocpManager::Begin()
 		return false;
 	}
 
-	// session µ¿ÀûÇÒ´ç
+	// session ë™ì í• ë‹¹
 	ListenSession = new PacketSession();
 
 	ListenSession->Begin();
@@ -366,7 +366,7 @@ bool IocpManager::Begin()
 
 	cout << "IOCP Handle Create ... " << endl;
 
-	// sessionÀÇ socket »ı¼º
+	// sessionì˜ socket ìƒì„±
 	if (!ListenSession->TCPCreateSocket())
 	{
 		return false;
@@ -374,7 +374,7 @@ bool IocpManager::Begin()
 
 	cout << "Socket Create ..." << endl;
 
-	// sessionÀÇ socket ÇØ´ç Æ÷Æ®¿¡ bind ¹× listen ½ÃÀÛ
+	// sessionì˜ socket í•´ë‹¹ í¬íŠ¸ì— bind ë° listen ì‹œì‘
 	if (!ListenSession->Listen(7777, SOMAXCONN))
 	{
 		return false;
@@ -382,15 +382,15 @@ bool IocpManager::Begin()
 
 	cout << "Start Listen ..." << endl;
 
-	// ListenSessionÀÇ socket iocp¿¡ µî·Ï
-	if (!RegisterIocpSocket(ListenSession->GetSocket(), /*key°ªÀ¸·Î Session³Ñ°ÜÁØ°ÅÀÓ*/(ULONG_PTR)ListenSession))
+	// ListenSessionì˜ socket iocpì— ë“±ë¡
+	if (!RegisterIocpSocket(ListenSession->GetSocket(), /*keyê°’ìœ¼ë¡œ Sessionë„˜ê²¨ì¤€ê±°ì„*/(ULONG_PTR)ListenSession))
 	{
 		return false;
 	}
 
 	cout << "RegisterIOCP of Socket ..." << endl;
 
-	// AcceptÇÒ session 10°³Á¤µµ¸¸ ¸¸µé¾î¼­ µ¿ÀûÇÒ´çÇÏ°í, Accept ¿¬°áÇØÁØµÚ¿¡, ¿¬°á¼º°øÇÏ¸é vector¿¡ pushback
+	// Acceptí•  session 10ê°œì •ë„ë§Œ ë§Œë“¤ì–´ì„œ ë™ì í• ë‹¹í•˜ê³ , Accept ì—°ê²°í•´ì¤€ë’¤ì—, ì—°ê²°ì„±ê³µí•˜ë©´ vectorì— pushback
 	for (int32 i = 0; i < 10; i++)
 	{
 		PacketSession* AcceptSession = new PacketSession();
@@ -401,12 +401,12 @@ bool IocpManager::Begin()
 
 		if (AcceptSession->Accept(ListenSession->GetSocket()) == true)
 		{
-			// TODO : GQCSÇÔ¼ö¿¡¼­ ³Ñ¾î¿Í¼­ ACCEPT°¡ È®ÀÎµÇ¸é ±×¶§ Session¿¡ Áı¾î³Ö¾î¾ß ÇÔ.
+			// TODO : GQCSí•¨ìˆ˜ì—ì„œ ë„˜ì–´ì™€ì„œ ACCEPTê°€ í™•ì¸ë˜ë©´ ê·¸ë•Œ Sessionì— ì§‘ì–´ë„£ì–´ì•¼ í•¨.
 			// ClientSessions.push_back(AcceptSession);
 		}
 	}
 
-	// IocpÀÇ WorkerThread
+	// Iocpì˜ WorkerThread
 	GThreadManager->Launch([=]()
 		{
 			IocpManager::WorkerThread();

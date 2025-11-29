@@ -1,6 +1,6 @@
 #pragma once
 
-// Message ±¸Á¶Ã¼
+// Message êµ¬ì¡°ì²´
 struct FMessage
 {
 	WCHAR Message[BUFSIZE];
@@ -25,10 +25,10 @@ public:
 
 public:
 	HWND _hwnd;
-	// µ¦À¸·Î °ü¸®ÇÏ¸é¼­ °¡Àå ¿À·¡µÈ ¸Ş¼¼Áö´Â »èÁ¦ÇØ¹ö¸®±â
+	// ë±ìœ¼ë¡œ ê´€ë¦¬í•˜ë©´ì„œ ê°€ì¥ ì˜¤ë˜ëœ ë©”ì„¸ì§€ëŠ” ì‚­ì œí•´ë²„ë¦¬ê¸°
 	Deque<FMessage> MessageDeque;
 
-	// ½Ã°£À» ±×³É StringÀ¸·Î ¹Ş¾Æ¼­ 
+	// ì‹œê°„ì„ ê·¸ëƒ¥ Stringìœ¼ë¡œ ë°›ì•„ì„œ 
 	FMessage TimeMessage;
 };
 

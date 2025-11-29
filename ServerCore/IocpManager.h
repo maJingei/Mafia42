@@ -25,13 +25,13 @@ public:
 
 
 protected:
-	// Listen¸¸À» À§ÇÑ SessionÀÔ´Ï´Ù.
+	// Listenë§Œì„ ìœ„í•œ Sessionì…ë‹ˆë‹¤.
 	PacketSession* ListenSession;
 
-	// ClientµéÀÌ ¿¬°áµÉ SessionµéÀÇ ¸ğÀ½ÀÔ´Ï´Ù.
+	// Clientë“¤ì´ ì—°ê²°ë  Sessionë“¤ì˜ ëª¨ìŒì…ë‹ˆë‹¤.
 	unordered_map<PacketSession*, FClientInfo> mClientSessions;
 
-	// IocpHandleÀÔ´Ï´Ù.
+	// IocpHandleì…ë‹ˆë‹¤.
 	HANDLE IocpHandle = {};
 
 	HANDLE StartEventHandle = {};

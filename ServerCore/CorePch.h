@@ -39,7 +39,7 @@ using namespace std;
 #include <thread>
 #include <chrono>
 
-// FileSystem : C++ 20 ¼³Á¤ÇÊ¿ä
+// FileSystem : C++ 20 ì„¤ì •í•„ìš”
 #include <format>
 #include <filesystem>
 namespace fs = std::filesystem;

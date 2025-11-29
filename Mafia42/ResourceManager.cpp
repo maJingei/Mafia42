@@ -16,20 +16,20 @@ void ResourceManager::Init(HWND hwnd, fs::path resourcePath)
 
 Texture* ResourceManager::LoadTexture(const wstring& key, const wstring& path, uint32 transparent)
 {
-	// ·ÎµåÇØµÎ¾ú´Ù¸é ±×´ë·Î Ã£Àº texture ¸®ÅÏ
+	// ë¡œë“œí•´ë‘ì—ˆë‹¤ë©´ ê·¸ëŒ€ë¡œ ì°¾ì€ texture ë¦¬í„´
 	if (_textures.find(key) != _textures.end())
 	{
 		return _textures[key];
 	}
 
-	// ·Îµå ¾ÈµÇ¾îÀÖÀ¸¸é »õ·Î »ı¼º ¹× ·Îµå
+	// ë¡œë“œ ì•ˆë˜ì–´ìˆìœ¼ë©´ ìƒˆë¡œ ìƒì„± ë° ë¡œë“œ
 	fs::path fullPath = _resourcePath / path;
 
 	Texture* texture = new Texture();
 	texture->LoadBmp(_hwnd, fullPath.c_str());
 	texture->SetTransparent(transparent);
 
-	// Map¿¡ ÀúÀå
+	// Mapì— ì €ì¥
 	_textures[key] = texture;
 
 	return texture;

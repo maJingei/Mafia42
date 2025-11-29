@@ -3,17 +3,17 @@
 
 NetworkSession::NetworkSession()
 {
-	// overlapped ±¸Á¶Ã¼ 0À¸·Î ¹Ğ¾îÁÖ±â
+	// overlapped êµ¬ì¡°ì²´ 0ìœ¼ë¡œ ë°€ì–´ì£¼ê¸°
 	ZeroMemory(&ReadOverlapped, sizeof(ReadOverlapped));
 	ZeroMemory(&WriteOverlapped, sizeof(WriteOverlapped));
 	ZeroMemory(&AcceptOverlapped, sizeof(AcceptOverlapped));
 
-	// Type ÃÊ±âÈ­
+	// Type ì´ˆê¸°í™”
 	ReadOverlapped.Type = EIO_TYPE::READ;
 	WriteOverlapped.Type = EIO_TYPE::WRITE;
 	AcceptOverlapped.Type = EIO_TYPE::ACCEPT;
 
-	// Object¿¡ thisÆ÷ÀÎÅÍ¸¦ ³Ö¾îÁÜÀ¸·Î¼­ GQCS ÇÔ¼ö¿¡¼­ ¹İÈ¯µÇ´Â overlappedEx ±¸Á¶Ã¼¿¡¼­ sessionÀ» »Ì¾Æ³¾ ¼ö ÀÖÀ½
+	// Objectì— thisí¬ì¸í„°ë¥¼ ë„£ì–´ì¤Œìœ¼ë¡œì„œ GQCS í•¨ìˆ˜ì—ì„œ ë°˜í™˜ë˜ëŠ” overlappedEx êµ¬ì¡°ì²´ì—ì„œ sessionì„ ë½‘ì•„ë‚¼ ìˆ˜ ìˆìŒ
 	WriteOverlapped.Object = this;
 	ReadOverlapped.Object = this;
 	AcceptOverlapped.Object = this;
@@ -28,23 +28,23 @@ NetworkSession::~NetworkSession()
 
 bool NetworkSession::Begin()
 {
-	// ÀÌ¹Ì SocketÀÌ Á¸ÀçÇÏ¸é ½ÇÆĞ
+	// ì´ë¯¸ Socketì´ ì¡´ì¬í•˜ë©´ ì‹¤íŒ¨
 	if (ConnSocket)
 	{
 		cout << "Already Socket Exist" << endl;
 		return false;
 	}
 
-	// »ç¿ëÇÒ ÆĞÅ¶ µ¿ÀûÇÒ´ç
+	// ì‚¬ìš©í•  íŒ¨í‚· ë™ì í• ë‹¹
 	ConnPacket = new FPacket();
 
-	// ÆĞÅ¶ ÃÊ±âÈ­
+	// íŒ¨í‚· ì´ˆê¸°í™”
 	ConnPacket->header.packetLength = 0;
 	ConnPacket->header.packetNum = 0;
 	ConnPacket->header.protocol = EPACKET_TYPE::NONE;
 	ZeroMemory(ConnPacket->ConnectBuffer, sizeof(ConnPacket->ConnectBuffer));
 
-	// recvBufferµµ ÃÊ±âÈ­
+	// recvBufferë„ ì´ˆê¸°í™”
 	ZeroMemory(recvBuffer, sizeof(recvBuffer));
 
 	return true;
@@ -61,7 +61,7 @@ bool NetworkSession::End()
 
 bool NetworkSession::Bind(SOCKADDR_IN address)
 {
-	// ¹ÙÀÎµå ½ÇÆĞ ½Ã ¼ÒÄÏ ´İ°í false ¹İÈ¯
+	// ë°”ì¸ë“œ ì‹¤íŒ¨ ì‹œ ì†Œì¼“ ë‹«ê³  false ë°˜í™˜
 	if (::bind(ConnSocket, (SOCKADDR*)&address, sizeof(address)) == SOCKET_ERROR)
 	{
 		cout << "Bind Failed" << endl;
@@ -106,7 +106,7 @@ bool NetworkSession::Listen(USHORT port, int32 backlog)
 }
 
 /*
-* µ¿±â ¹æ½ÄÀÇ °¡Àå ±âº»ÀûÀÎ connectÇÔ¼ö¸¦ »ç¿ëÇÑ ConnectÀÔ´Ï´Ù.
+* ë™ê¸° ë°©ì‹ì˜ ê°€ì¥ ê¸°ë³¸ì ì¸ connectí•¨ìˆ˜ë¥¼ ì‚¬ìš©í•œ Connectì…ë‹ˆë‹¤.
 */
 bool NetworkSession::Connect(SOCKADDR_IN address)
 {
@@ -134,7 +134,7 @@ bool NetworkSession::Accept(SOCKET listenSocket)
 	ConnSocket = ::WSASocketW(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (ConnSocket == INVALID_SOCKET)
 	{
-		cout << "¼ÒÄÏ »ı¼º ½ÇÆĞ" << endl;
+		cout << "ì†Œì¼“ ìƒì„± ì‹¤íŒ¨" << endl;
 		return false;
 	}
 
@@ -143,10 +143,10 @@ bool NetworkSession::Accept(SOCKET listenSocket)
 
 	DWORD Bytes = 0;
 
-	// WSAIoctlÀ» »ç¿ëÇÏ¿© AcceptEx ÇÔ¼ö¸¦ ¸Ş¸ğ¸®¿¡ ·ÎµåÇÕ´Ï´Ù.
-	// WSAIoctl ÇÔ¼ö´Â ÁßÃ¸µÈ I/O¸¦ »ç¿ëÇÒ ¼ö ÀÖ´Â ioctlsocket() ÇÔ¼öÀÇ È®ÀåÀÔ´Ï´Ù.
-	// ÇÔ¼öÀÇ È®ÀåÆÇÀ¸·Î ¿À¹ö·¦ I/O¸¦ »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù. ÀÌ ÇÔ¼öÀÇ 3¹øÂ°ºÎÅÍ 6¹øÂ° ¸Å°³º¯¼ö´Â ÀÔ·Â ¹× Ãâ·Â ¹öÆÛ·Î, ¿©±â¿¡ AcceptEx ÇÔ¼ö Æ÷ÀÎÅÍ¸¦ Àü´ŞÇÕ´Ï´Ù.
-	// ÀÌ´Â Mswsock.lib ¶óÀÌºê·¯¸®¸¦ ÂüÁ¶ÇÏÁö ¾Ê°í Á÷Á¢ AcceptEx ÇÔ¼ö¸¦ È£ÃâÇÒ ¼ö ÀÖµµ·Ï ÇÏ±â À§ÇÑ °ÍÀÔ´Ï´Ù.
+	// WSAIoctlì„ ì‚¬ìš©í•˜ì—¬ AcceptEx í•¨ìˆ˜ë¥¼ ë©”ëª¨ë¦¬ì— ë¡œë“œí•©ë‹ˆë‹¤.
+	// WSAIoctl í•¨ìˆ˜ëŠ” ì¤‘ì²©ëœ I/Oë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” ioctlsocket() í•¨ìˆ˜ì˜ í™•ì¥ì…ë‹ˆë‹¤.
+	// í•¨ìˆ˜ì˜ í™•ì¥íŒìœ¼ë¡œ ì˜¤ë²„ë© I/Oë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤. ì´ í•¨ìˆ˜ì˜ 3ë²ˆì§¸ë¶€í„° 6ë²ˆì§¸ ë§¤ê°œë³€ìˆ˜ëŠ” ì…ë ¥ ë° ì¶œë ¥ ë²„í¼ë¡œ, ì—¬ê¸°ì— AcceptEx í•¨ìˆ˜ í¬ì¸í„°ë¥¼ ì „ë‹¬í•©ë‹ˆë‹¤.
+	// ì´ëŠ” Mswsock.lib ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ ì°¸ì¡°í•˜ì§€ ì•Šê³  ì§ì ‘ AcceptEx í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•  ìˆ˜ ìˆë„ë¡ í•˜ê¸° ìœ„í•œ ê²ƒì…ë‹ˆë‹¤.
 	int32 result = WSAIoctl(listenSocket, SIO_GET_EXTENSION_FUNCTION_POINTER,
 		&GuidAcceptEx, sizeof(GuidAcceptEx),
 		&lpfnAcceptEx, sizeof(lpfnAcceptEx),
@@ -154,13 +154,13 @@ bool NetworkSession::Accept(SOCKET listenSocket)
 
 	if (result == SOCKET_ERROR)
 	{
-		cout << "AcceptEx ÇÔ¼ö ¸Ş¸ğ¸®¿¡ ·Îµå ½ÇÆĞ" << endl;
+		cout << "AcceptEx í•¨ìˆ˜ ë©”ëª¨ë¦¬ì— ë¡œë“œ ì‹¤íŒ¨" << endl;
 		End();
 
 		return false;
 	}
 
-	// Å¬¶óÀÌ¾ğÆ® ÁÖ¼Ò¿Í ¼­¹ö ÁÖ¼ÒÀÇ Å©±â¸¸Å­Àº Buffersize¿¡¼­ »©Áà¾ß ÇÕ´Ï´Ù.
+	// í´ë¼ì´ì–¸íŠ¸ ì£¼ì†Œì™€ ì„œë²„ ì£¼ì†Œì˜ í¬ê¸°ë§Œí¼ì€ Buffersizeì—ì„œ ë¹¼ì¤˜ì•¼ í•©ë‹ˆë‹¤.
 	if (lpfnAcceptEx(listenSocket, ConnSocket, recvBuffer, BUFSIZE - ((sizeof(sockaddr) + 16) * 2), sizeof(sockaddr) + 16, sizeof(sockaddr) + 16, &Bytes, &AcceptOverlapped.Overlapped) == FALSE)
 	{
 		int32 errorCode = WSAGetLastError();
@@ -217,8 +217,8 @@ bool NetworkSession::Recv()
 bool NetworkSession::Send(FPacket* packet)
 {
 	WSABUF wsaBuf;
-	wsaBuf.buf = (char*)packet; // ¸¸µç ÆĞÅ¶À» ±×´ë·Î Àü´Ş
-	wsaBuf.len = DataSize; // PacketHeader±îÁö Æ÷ÇÔµÈ DataSize Àü´Ş
+	wsaBuf.buf = (char*)packet; // ë§Œë“  íŒ¨í‚·ì„ ê·¸ëŒ€ë¡œ ì „ë‹¬
+	wsaBuf.len = DataSize; // PacketHeaderê¹Œì§€ í¬í•¨ëœ DataSize ì „ë‹¬
 
 	DWORD sendlen = 0;
 	DWORD flags = 0;
@@ -263,7 +263,7 @@ bool NetworkSession::TCPCreateSocket()
 	ConnSocket = ::WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (ConnSocket == INVALID_SOCKET)
 	{
-		cout << "Socket »ı¼º ½ÇÆĞ" << endl;
+		cout << "Socket ìƒì„± ì‹¤íŒ¨" << endl;
 		return false;
 	}
 

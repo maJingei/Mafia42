@@ -9,13 +9,13 @@ GameManager::~GameManager()
 
 void GameManager::GameThread()
 {
-	// Event°¡ Signaled°¡ µÉ ¶§±îÁö Thread°¡ ´ë±â»óÅÂ·Î ±â´Ù¸³´Ï´Ù.
+	// Eventê°€ Signaledê°€ ë  ë•Œê¹Œì§€ Threadê°€ ëŒ€ê¸°ìƒíƒœë¡œ ê¸°ë‹¤ë¦½ë‹ˆë‹¤.
 	::WaitForSingleObject(GameEventHandle, INFINITE);
 
-	// ½ÃÀÛ @@!!
+	// ì‹œì‘ @@!!
 	cout << "GameStart ! " << endl;
 
-	// ¿ªÇÒ ºĞ¹è
+	// ì—­í•  ë¶„ë°°
 	ShuffleRole();
 
 	float deltaTime = 0;
@@ -37,7 +37,7 @@ void GameManager::GameThread()
 
 void GameManager::ShuffleRole()
 {
-	// TODO : ¿ªÇÒ ºĞ¹èÇØ¼­ Clientµé¿¡°Ô Send
+	// TODO : ì—­í•  ë¶„ë°°í•´ì„œ Clientë“¤ì—ê²Œ Send
 	GET_SINGLE(IocpManager)->NetworkShuffleRole();
 }
 
@@ -50,14 +50,14 @@ void GameManager::TimeBroadcast(int32 time)
 
 void GameManager::Init()
 {
-	GameEventHandle = ::CreateEvent(NULL, // º¸¾È°ü·Ã
-		FALSE, // ¼öµ¿ Àç¼³Á¤ ÀÌº¥Æ® °´Ã¼ »ı¼º
-		FALSE, // ÃÊ±â »óÅÂ°¡ signaled
-		NULL); // ÀÌº¥Æ® °´Ã¼ ÀÌ¸§
+	GameEventHandle = ::CreateEvent(NULL, // ë³´ì•ˆê´€ë ¨
+		FALSE, // ìˆ˜ë™ ì¬ì„¤ì • ì´ë²¤íŠ¸ ê°ì²´ ìƒì„±
+		FALSE, // ì´ˆê¸° ìƒíƒœê°€ signaled
+		NULL); // ì´ë²¤íŠ¸ ê°ì²´ ì´ë¦„
 
-	// CPU Å¬·°°ú ÁÖÆÄ¼ö ¶¯°Ü¿À±â
+	// CPU í´ëŸ­ê³¼ ì£¼íŒŒìˆ˜ ë•¡ê²¨ì˜¤ê¸°
 	::QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&_frequency));
-	::QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&_prevCount)); // CPU Å¬·°
+	::QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&_prevCount)); // CPU í´ëŸ­
 }
 
 void GameManager::Update()
@@ -79,6 +79,6 @@ void GameManager::TimeUpdate()
 
 void GameManager::SetGameEvent()
 {
-	// ½Ã±×³Î »óÅÂ·Î !
+	// ì‹œê·¸ë„ ìƒíƒœë¡œ !
 	::SetEvent(GameEventHandle);
 }

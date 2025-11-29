@@ -36,7 +36,7 @@ TitleScene::~TitleScene()
 void TitleScene::Init(HWND hwnd)
 {
 	Super::Init(hwnd);
-	// ÀÌ¹ÌÁö Load
+	// ì´ë¯¸ì§€ Load
 	GET_SINGLE(ResourceManager)->LoadTexture(L"Start", L"Sprite\\UI\\GameStart.bmp");
 	GET_SINGLE(ResourceManager)->LoadTexture(L"TitleBackGround", L"Sprite\\Map\\BackGround.bmp");
 
@@ -59,17 +59,17 @@ void TitleScene::Init(HWND hwnd)
 		UIObjects.push_back(button);
 	}
 
-	// Window Edit Ã¢ »ý¼º
+	// Window Edit ì°½ ìƒì„±
 	hEditHandle = CreateWindowEx(
 		0,
-		L"EDIT", // À©µµ¿ìÃ¢¿¡´Â ´Ù¾çÇÑ Å¬·¡½º°¡ Á¸ÀçÇÏ´Âµ¥, ms¹®¼­¸¦ »ìÆìº¸ÀÚ. EDITÀº Ã¤ÆÃÃ¢ ¤·¤·
-		NULL, // »ý¼ºÇÒ À©µµ¿ì Ã¢ ÀÌ¸§
+		L"EDIT", // ìœˆë„ìš°ì°½ì—ëŠ” ë‹¤ì–‘í•œ í´ëž˜ìŠ¤ê°€ ì¡´ìž¬í•˜ëŠ”ë°, msë¬¸ì„œë¥¼ ì‚´íŽ´ë³´ìž. EDITì€ ì±„íŒ…ì°½ ã…‡ã…‡
+		NULL, // ìƒì„±í•  ìœˆë„ìš° ì°½ ì´ë¦„
 		WS_BORDER | WS_CHILD | WS_VISIBLE | ES_AUTOVSCROLL | ES_AUTOHSCROLL,
-		// WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL, // Ã¢ ½ºÅ¸ÀÏ°ú ÆíÁý ÄÁÆ®·Ñ. ms ¹®¼­ »ìÆìº¸±â
-		50, // Ã¤ÆÃ Ã¢ÀÇ XÁÂÇ¥
-		400, // Ã¤ÆÃ¹Ú½ºÀÇ YÁÂÇ¥
-		450, // Ã¤ÆÃ¹Ú½ºÀÇ ³Êºñ
-		20, // Ã¤ÆÃ¹Ú½ºÀÇ ³ôÀÌ
+		// WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL, // ì°½ ìŠ¤íƒ€ì¼ê³¼ íŽ¸ì§‘ ì»¨íŠ¸ë¡¤. ms ë¬¸ì„œ ì‚´íŽ´ë³´ê¸°
+		50, // ì±„íŒ… ì°½ì˜ Xì¢Œí‘œ
+		400, // ì±„íŒ…ë°•ìŠ¤ì˜ Yì¢Œí‘œ
+		450, // ì±„íŒ…ë°•ìŠ¤ì˜ ë„ˆë¹„
+		20, // ì±„íŒ…ë°•ìŠ¤ì˜ ë†’ì´
 		_hwnd,
 		(HMENU)ID_EDIT,
 		NULL,
@@ -93,7 +93,7 @@ void TitleScene::Update()
 
 		::GetWindowText(hEditHandle, RecvBuffer, buffersize);
 
-		// Client ÀÌ¸§ Àû¾îÁÖ±â
+		// Client ì´ë¦„ ì ì–´ì£¼ê¸°
 		wcscpy_s(GET_SINGLE(ClientIocpManager)->ClientName, buffersize, RecvBuffer);
 	}
 

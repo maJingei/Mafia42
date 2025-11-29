@@ -40,7 +40,7 @@ void MessageManager::Render(HDC hdc)
 		}
 	}
 	
-	// ½Ã°£Àº µû·Î
+	// ì‹œê°„ì€ ë”°ë¡œ
 	::SetTextColor(hdc, TimeMessage.color);
 	::SetBkMode(hdc, TRANSPARENT);
 	::DrawText(hdc, TimeMessage.Message, -1, &TimeMessage.rect, DT_VCENTER | DT_WORDBREAK);

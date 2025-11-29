@@ -69,7 +69,7 @@ void SceneManager::ChangeScene(SceneType sceneType)
 	_scene = newScene;
 	_sceneType = sceneType;
 
-	// GameÀÇ Init¿¡¼­ SceneManager°¡ InitÀ» ÁøÇàÇÏ´Ï ChangeScene¿¡¼­´Â InitÀ» ÇÒ ÇÊ¿ä°¡ .. ? 
-	// ±Ùµ¥ ±×·¯¸é SceneÀÌ ChangeµÉ ¶§ InitÀÌ ÇÊ¿äÇÔ. 
+	// Gameì˜ Initì—ì„œ SceneManagerê°€ Initì„ ì§„í–‰í•˜ë‹ˆ ChangeSceneì—ì„œëŠ” Initì„ í•  í•„ìš”ê°€ .. ? 
+	// ê·¼ë° ê·¸ëŸ¬ë©´ Sceneì´ Changeë  ë•Œ Initì´ í•„ìš”í•¨. 
 	newScene->Init(_hwnd);
 }

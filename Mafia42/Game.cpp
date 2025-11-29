@@ -28,20 +28,20 @@ void Game::Init(HWND hwnd)
 
 	::GetClientRect(hwnd, &_rect);
 
-	hdcBack = ::CreateCompatibleDC(_hdc); // hdc¿Í È£È¯µÇ´Â DC¸¦ »ý¼º
-	_bmpBack = ::CreateCompatibleBitmap(_hdc, _rect.right, _rect.bottom); // hdc¿Í È£È¯µÇ´Â ºñÆ®¸Ê »ý¼º
-	HBITMAP prev = (HBITMAP)::SelectObject(hdcBack, _bmpBack); // DC¿Í BMP¸¦ ¿¬°á
+	hdcBack = ::CreateCompatibleDC(_hdc); // hdcì™€ í˜¸í™˜ë˜ëŠ” DCë¥¼ ìƒì„±
+	_bmpBack = ::CreateCompatibleBitmap(_hdc, _rect.right, _rect.bottom); // hdcì™€ í˜¸í™˜ë˜ëŠ” ë¹„íŠ¸ë§µ ìƒì„±
+	HBITMAP prev = (HBITMAP)::SelectObject(hdcBack, _bmpBack); // DCì™€ BMPë¥¼ ì—°ê²°
 	::DeleteObject(prev);
 
 	WSAData wsaData;
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
-		return; // WSA ¶óÀÌºê·¯¸® ÃÊ±âÈ­
+		return; // WSA ë¼ì´ë¸ŒëŸ¬ë¦¬ ì´ˆê¸°í™”
 	}
 
 	if (GET_SINGLE(ClientIocpManager)->Init(_hwnd) == false)
 	{
-		// TODO : ³×Æ®¿öÅ© ¿¬°á ½ÇÆÐ
+		// TODO : ë„¤íŠ¸ì›Œí¬ ì—°ê²° ì‹¤íŒ¨
 	}
 
 	GET_SINGLE(TimeManager)->Init();
@@ -69,8 +69,8 @@ void Game::Render()
 	GET_SINGLE(SceneManager)->Render(hdcBack);
 
 	// Double Buffering
-	::BitBlt(_hdc, 0, 0, _rect.right, _rect.bottom, hdcBack, 0, 0, SRCCOPY); // ºñÆ® ºí¸´ : °í¼Ó º¹»ç
-	::PatBlt(hdcBack, 0, 0, _rect.right, _rect.bottom, WHITENESS); // backBuffer ¹Ð¾îÁÖ±â
+	::BitBlt(_hdc, 0, 0, _rect.right, _rect.bottom, hdcBack, 0, 0, SRCCOPY); // ë¹„íŠ¸ ë¸”ë¦¿ : ê³ ì† ë³µì‚¬
+	::PatBlt(hdcBack, 0, 0, _rect.right, _rect.bottom, WHITENESS); // backBuffer ë°€ì–´ì£¼ê¸°
 
 	GET_SINGLE(SceneManager)->UpdateControl();
 }

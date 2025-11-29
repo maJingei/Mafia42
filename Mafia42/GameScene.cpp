@@ -26,17 +26,17 @@ void GameScene::Init(HWND hwnd)
 		UIObjects.push_back(backGround);
 	}
 
-	// Window Edit â ����
+	// Window Edit 창 생성
 	hEditHandle = CreateWindowEx(
 		0,
-		L"EDIT", // ������â���� �پ��� Ŭ������ �����ϴµ�, ms������ ���캸��. EDIT�� ä��â ����
-		NULL, // ������ ������ â �̸�
+		L"EDIT", // 윈도우창에는 다양한 클래스가 존재하는데, ms문서를 살펴보자. EDIT은 채팅창 ㅇㅇ
+		NULL, // 생성할 윈도우 창 이름
 		WS_BORDER | WS_CHILD | WS_VISIBLE | ES_AUTOVSCROLL | ES_AUTOHSCROLL,
-		// WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL, // â ��Ÿ�ϰ� ���� ��Ʈ��. ms ���� ���캸��
-		50, // ä�� â�� X��ǥ
-		700, // ä�ùڽ��� Y��ǥ
-		450, // ä�ùڽ��� �ʺ�
-		20, // ä�ùڽ��� ����
+		// WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL, // 창 스타일과 편집 컨트롤. ms 문서 살펴보기
+		50, // 채팅 창의 X좌표
+		700, // 채팅박스의 Y좌표
+		450, // 채팅박스의 너비
+		20, // 채팅박스의 높이
 		_hwnd,
 		(HMENU)ID_EDIT,
 		NULL,

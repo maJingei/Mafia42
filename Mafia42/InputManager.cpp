@@ -16,12 +16,12 @@ void InputManager::Update()
 
 	for (uint32 key = 0; key < KEY_TYPE_COUNT; key++)
 	{
-		// Å°°¡ ´­·Á ÀÖÀ¸¸é true
+		// í‚¤ê°€ ëˆŒë ¤ ìˆìœ¼ë©´ true
 		if (asciiKeys[key] & 0x80)
 		{
 			KeyState& state = _states[key];
 
-			// ÀÌÀü ÇÁ·¹ÀÓ¿¡ Å°¸¦ ´©¸¥ »óÅÂ¶ó¸é PRESS
+			// ì´ì „ í”„ë ˆì„ì— í‚¤ë¥¼ ëˆ„ë¥¸ ìƒíƒœë¼ë©´ PRESS
 			if (state == KeyState::Press || state == KeyState::Down)
 				state = KeyState::Press;
 			else
@@ -31,7 +31,7 @@ void InputManager::Update()
 		{
 			KeyState& state = _states[key];
 
-			// ÀÌÀü ÇÁ·¹ÀÓ¿¡ Å°¸¦ ´©¸¥ »óÅÂ¶ó¸é UP
+			// ì´ì „ í”„ë ˆì„ì— í‚¤ë¥¼ ëˆ„ë¥¸ ìƒíƒœë¼ë©´ UP
 			if (state == KeyState::Press || state == KeyState::Down)
 				state = KeyState::Up;
 			else
@@ -40,6 +40,6 @@ void InputManager::Update()
 	}
 
 	// Mouse
-	::GetCursorPos(&_mousePos); // Ä¿¼­ÀÇ ÁÂÇ¥¸¦ ¾Ë¾Æ¿Â´Ù
+	::GetCursorPos(&_mousePos); // ì»¤ì„œì˜ ì¢Œí‘œë¥¼ ì•Œì•„ì˜¨ë‹¤
 	::ScreenToClient(_hwnd, &_mousePos);
 }

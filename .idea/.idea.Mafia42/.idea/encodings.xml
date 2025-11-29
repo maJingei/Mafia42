@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
+    <file url="file://$PROJECT_DIR$/Mafia42/Button.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/ClientIocpManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/ClientIocpManager.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/Game.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/GameScene.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/InputManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/InputManager.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/LobbyScene.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/MessageManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/MessageManager.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/ResourceManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/Scene.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/Scene.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/SceneManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/StartButton.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/TimeManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/TitleScene.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/TitleScene.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Mafia42/pch.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Server/pch.h" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/ServerCore/CorePch.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/GameManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/GameManager.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/IocpManager.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/IocpManager.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/NetworkSession.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/NetworkSession.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/PacketSession.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerCore/PacketTypes.h" charset="UTF-8" />
+  </component>
+</project>

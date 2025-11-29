@@ -18,15 +18,15 @@ void StartButton::Update()
 
 void StartButton::OnClicked()
 {
-	// Ã¤ÆÃ ÀÔ·ÂÇÑ ¹öÆÛ¿¡ ±ÛÀÚ°¡ ÀûÇôÀÖ¾î¾ßµÊ
+	// ì±„íŒ… ì…ë ¥í•œ ë²„í¼ì— ê¸€ìê°€ ì í˜€ìˆì–´ì•¼ë¨
 	if (wcscmp(GET_SINGLE(ClientIocpManager)->ClientName, L"") == 0)
 	{
-		// TODO : ±ÛÀÚ ÀûÇôÀÖÀ¸¸é ¼­¹ö¿¡ ÆĞÅ¶ ¸¸µé¾î¼­ Àü¼Û
+		// TODO : ê¸€ì ì í˜€ìˆìœ¼ë©´ ì„œë²„ì— íŒ¨í‚· ë§Œë“¤ì–´ì„œ ì „ì†¡
 		return;
 	}
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::LobbyScene);
 
-	// TODO : Server·Î Connect ¿äÃ» ½ÃÀÛ
+	// TODO : Serverë¡œ Connect ìš”ì²­ ì‹œì‘
 
 	SOCKADDR_IN serverAddr;
 	::memset(&serverAddr, 0, sizeof(serverAddr));
@@ -34,8 +34,8 @@ void StartButton::OnClicked()
 	::inet_pton(AF_INET, "127.0.0.1", &serverAddr.sin_addr);
 	serverAddr.sin_port = ::htons(7777);
 
-	// TODO : TitleScene¿¡¼­µµ Edit Ã¢ ÇÏ³ª ¸¸µé¾î¼­ ´Ğ³×ÀÓ ¹ŞÀº´ÙÀ½¿¡, ClientIocpManager¿¡ ÀúÀåÇØ³õ°í
-	// ¿©±â¼­ NickNameÀ» ¼­¹ö·Î º¸³»´Â°É·Î.
+	// TODO : TitleSceneì—ì„œë„ Edit ì°½ í•˜ë‚˜ ë§Œë“¤ì–´ì„œ ë‹‰ë„¤ì„ ë°›ì€ë‹¤ìŒì—, ClientIocpManagerì— ì €ì¥í•´ë†“ê³ 
+	// ì—¬ê¸°ì„œ NickNameì„ ì„œë²„ë¡œ ë³´ë‚´ëŠ”ê±¸ë¡œ.
 	WCHAR* SendBuffer = GET_SINGLE(ClientIocpManager)->ClientName;
 	int32 StrSize = WideCharToMultiByte(CP_ACP, 0, SendBuffer, -1, NULL, 0, NULL, NULL);
 	char* charSendBuffer = new char[StrSize];
@@ -48,11 +48,11 @@ void StartButton::OnClicked()
 	if (TempSession->CreatePacket(EPACKET_TYPE::LOGIN, (BYTE*)charSendBuffer, StrSize) == false)
 	{
 		return;
-		// TODO : ÆĞÅ¶ »ı¼º ½ÇÆĞ
+		// TODO : íŒ¨í‚· ìƒì„± ì‹¤íŒ¨
 	}
 
-	// ÆĞÅ¶ ¸¸µé¾úÀ¸´Ï µ¿ÀûÇÒ´çÇß´ø char ¹è¿­ delete 
-	// TODO : ¤¶¤³ ±Ùµ¥ WCHAR ÀÌ·¸°Ô ½á¾ßµÇ´Â°Ç°¡ ; 
+	// íŒ¨í‚· ë§Œë“¤ì—ˆìœ¼ë‹ˆ ë™ì í• ë‹¹í–ˆë˜ char ë°°ì—´ delete 
+	// TODO : ã…†ã…ƒ ê·¼ë° WCHAR ì´ë ‡ê²Œ ì¨ì•¼ë˜ëŠ”ê±´ê°€ ; 
 	delete charSendBuffer;
 	charSendBuffer = nullptr;
 

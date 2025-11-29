@@ -8,7 +8,7 @@ enum EGamePhase
 };
 
 /*
-* ¼­¹ö¿¡¼­ ÁøÇàµË´Ï´Ù.
+* ì„œë²„ì—ì„œ ì§„í–‰ë©ë‹ˆë‹¤.
 */
 class GameManager
 {
@@ -29,7 +29,7 @@ public:
 	
 	float GetDeltaTime() { return _deltaTime; }
 
-	// Time °ü·Ã º¯¼öµé
+	// Time ê´€ë ¨ ë³€ìˆ˜ë“¤
 private:
 	uint64 _frequency = 0;
 	uint64 _prevCount = 0;
@@ -38,7 +38,7 @@ private:
 	float time = 300;
 
 private:
-	// GameThread´Â ÀÌ ÀÌº¥Æ®°¡ ½Ã±×³Î»óÅÂ°¡ µÆÀ» ¶§ ±ú¾î³ª¸é¼­ ·ÎÁ÷ÀÌ ½ÇÇàµÉ °Í ÀÔ´Ï´Ù.
+	// GameThreadëŠ” ì´ ì´ë²¤íŠ¸ê°€ ì‹œê·¸ë„ìƒíƒœê°€ ëì„ ë•Œ ê¹¨ì–´ë‚˜ë©´ì„œ ë¡œì§ì´ ì‹¤í–‰ë  ê²ƒ ì…ë‹ˆë‹¤.
 	HANDLE GameEventHandle;
 };
 

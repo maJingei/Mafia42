@@ -20,17 +20,17 @@ public:
 	PacketSession* GetSession();
 
 public:
-	// Listen¸¸À» À§ÇÑ SessionÀÔ´Ï´Ù.
+	// Listenë§Œì„ ìœ„í•œ Sessionì…ë‹ˆë‹¤.
 	PacketSession* ListenSession;
 
-	// IocpHandleÀÔ´Ï´Ù.
+	// IocpHandleì…ë‹ˆë‹¤.
 	HANDLE IocpHandle = {};
 
 	HANDLE StartEventHandle = {};
 
 	WCHAR ClientName[BUFSIZE] = {};
 
-	// PostMessageÇÔ¼ö¸¦ À§ÇÑ hwnd
+	// PostMessageí•¨ìˆ˜ë¥¼ ìœ„í•œ hwnd
 	HWND _hwnd;
 };
 

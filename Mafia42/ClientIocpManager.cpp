@@ -29,13 +29,13 @@ void ClientIocpManager::WorkerThread()
 
 		if (result == TRUE)
 		{
-			// ¿Ï·áµÈ ÀÛ¾÷ÀÇ Å¸ÀÔÀ» È®ÀÎÇÕ´Ï´Ù.
+			// ì™„ë£Œëœ ì‘ì—…ì˜ íƒ€ì…ì„ í™•ì¸í•©ë‹ˆë‹¤.
 			switch (overlappedEx->Type)
 			{
 			case EIO_TYPE::READ:
 				HandlePacket(session, bytesTransferred);
 
-				// Ã³¸®°¡ ³¡³µÀ¸´Ï ´ÙÀ½ µ¥ÀÌÅÍ¸¦ ¹Ş±â À§ÇØ ´Ù½Ã Recv¸¦ °Ì´Ï´Ù.
+				// ì²˜ë¦¬ê°€ ëë‚¬ìœ¼ë‹ˆ ë‹¤ìŒ ë°ì´í„°ë¥¼ ë°›ê¸° ìœ„í•´ ë‹¤ì‹œ Recvë¥¼ ê²ë‹ˆë‹¤.
 				if (session->Recv() == false)
 				{
 					break;
@@ -43,7 +43,7 @@ void ClientIocpManager::WorkerThread()
 				break;
 
 			case EIO_TYPE::WRITE:
-				//// Send°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù. (º¸Åë Å¬¶óÀÌ¾ğÆ®¿¡¼± Æ¯º°È÷ ÇÒ ÀÏ ¾øÀ½)
+				//// Sendê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. (ë³´í†µ í´ë¼ì´ì–¸íŠ¸ì—ì„  íŠ¹ë³„íˆ í•  ì¼ ì—†ìŒ)
 				break;
 			}
 		}
@@ -52,7 +52,7 @@ void ClientIocpManager::WorkerThread()
 
 bool ClientIocpManager::RegisterIocpSocket(SOCKET socket, ULONG_PTR completionKey)
 {
-	// Àü´ŞµÈ SocketÀ» cp¿¡ µî·ÏÇÕ´Ï´Ù.
+	// ì „ë‹¬ëœ Socketì„ cpì— ë“±ë¡í•©ë‹ˆë‹¤.
 	IocpHandle = CreateIoCompletionPort((HANDLE)socket, IocpHandle, completionKey, 0);
 
 	if (!IocpHandle)
@@ -80,32 +80,32 @@ void ClientIocpManager::HandlePacket(PacketSession* session, DWORD byteTrasnferr
 		DWORD CurrentSize = session->GetDataSize();
 		if (CurrentSize <= HeaderSize)
 		{
-			break; // Àü´ŞµÈ µ¥ÀÌÅÍ Å©±â°¡ Çì´õº¸´Ù ÀÛÀ¸¸é ´Ù ¾È¿È
+			break; // ì „ë‹¬ëœ ë°ì´í„° í¬ê¸°ê°€ í—¤ë”ë³´ë‹¤ ì‘ìœ¼ë©´ ë‹¤ ì•ˆì˜´
 		}
 
-		// PacketHeader°¡ PacketÀÇ offsetÀÇ ¸Ç À§¿¡ ÀÖ¾ú±â ¶§¹®¿¡ Ä³½ºÆÃ °¡´É
+		// PacketHeaderê°€ Packetì˜ offsetì˜ ë§¨ ìœ„ì— ìˆì—ˆê¸° ë•Œë¬¸ì— ìºìŠ¤íŒ… ê°€ëŠ¥
 		FPacketHeader* header = (FPacketHeader*)tempBuffer;
-		int32 tempPacketLen = ::ntohl(header->packetLength); // ³×Æ®¿öÅ© ¿£µğ¾È ¸ÂÃçÁÜ
+		int32 tempPacketLen = ::ntohl(header->packetLength); // ë„¤íŠ¸ì›Œí¬ ì—”ë””ì•ˆ ë§ì¶°ì¤Œ
 
 		if (tempPacketLen <= 0)
 		{
-			break; // packetLenÀÌ 0º¸´Ù ÀÛÀ¸¸é ¹®Á¦ÀÖÀ½
+			break; // packetLenì´ 0ë³´ë‹¤ ì‘ìœ¼ë©´ ë¬¸ì œìˆìŒ
 		}
 
 		if (CurrentSize < tempPacketLen)
 		{
-			// Àü´ŞµÈ DataÀÇ size°¡ PacketÀÇ Lenº¸´Ù ÀÛÀ¸¸é ¹®Á¦ÀÖÀ½
+			// ì „ë‹¬ëœ Dataì˜ sizeê°€ Packetì˜ Lenë³´ë‹¤ ì‘ìœ¼ë©´ ë¬¸ì œìˆìŒ
 			break;
 		}
 
-		// ¿©±â±îÁö ¿À¸é ÇÏ³ªÀÇ ÆĞÅ¶Àº º¸ÀåµÇ´Ï ÆĞÅ¶ Ã³¸®
+		// ì—¬ê¸°ê¹Œì§€ ì˜¤ë©´ í•˜ë‚˜ì˜ íŒ¨í‚·ì€ ë³´ì¥ë˜ë‹ˆ íŒ¨í‚· ì²˜ë¦¬
 		ProcessPacket(session, tempBuffer, CurrentSize);
 
 		DWORD remainSize = CurrentSize - tempPacketLen;
 
 		if (remainSize > 0)
 		{
-			// ³²Àº Å©±â¸¸Å­À» Ã³¸®ÇÑ ÆĞÅ¶ ÈÄºÎÅÍ Ã³À½À¸·Î ¿Å°ÜÁÜ
+			// ë‚¨ì€ í¬ê¸°ë§Œí¼ì„ ì²˜ë¦¬í•œ íŒ¨í‚· í›„ë¶€í„° ì²˜ìŒìœ¼ë¡œ ì˜®ê²¨ì¤Œ
 			::memmove(tempBuffer, tempBuffer + tempPacketLen, remainSize);
 		}
 
@@ -128,13 +128,13 @@ bool ClientIocpManager::Init(HWND hwnd)
 		return false;
 	}
 
-	IocpHandle = ::CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0); // IOCP ÇÚµé »ı¼º
+	IocpHandle = ::CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0); // IOCP í•¸ë“¤ ìƒì„±
 	if (!IocpHandle)
 	{
 		return false;
 	}
 
-	// Session »ı¼º
+	// Session ìƒì„±
 	ListenSession = new PacketSession();
 
 	if (ListenSession->Begin() == false)
@@ -192,7 +192,7 @@ void ClientIocpManager::ProcessPacket(PacketSession* session, char* Buffer, DWOR
 		::PostMessage(_hwnd, WM_USER_CHAT_RECV, 0, (LPARAM)chatBuffer);
 		break;
 	}
-	case EPACKET_TYPE::GAMESTART: // °ÔÀÓ ½ÃÀÛ ¸Ş¼¼Áö Àü¼ÛÇÏ¸é WndProc¿¡¼­ Scene¹Ù²Ü°ÅÀÓ. 
+	case EPACKET_TYPE::GAMESTART: // ê²Œì„ ì‹œì‘ ë©”ì„¸ì§€ ì „ì†¡í•˜ë©´ WndProcì—ì„œ Sceneë°”ê¿€ê±°ì„. 
 	{
 		::PostMessage(_hwnd, WM_USER_GAME_START, 0, 0);
 		break;

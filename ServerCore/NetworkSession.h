@@ -2,7 +2,7 @@
 
 struct FPacket;
 
-// OverlappedÀÇ Á¾·ùÀÔ´Ï´Ù.
+// Overlappedì˜ ì¢…ë¥˜ìž…ë‹ˆë‹¤.
 enum EIO_TYPE
 {
 	READ,
@@ -12,13 +12,13 @@ enum EIO_TYPE
 
 struct FOverlappedEx
 {
-	// Ä³½ºÆÃ offsetÀ¸·Î ÀÎÇØ Overlapped º¯¼ö´Â ±¸Á¶Ã¼ÀÇ °¡Àå À§¿¡ 
+	// ìºìŠ¤íŒ… offsetìœ¼ë¡œ ì¸í•´ Overlapped ë³€ìˆ˜ëŠ” êµ¬ì¡°ì²´ì˜ ê°€ìž¥ ìœ„ì— 
 	WSAOVERLAPPED Overlapped = {};
 
 	// IO_TYPE
 	int32 Type = 0;
 	
-	// °³Ã¼¸¦ ±¸ºÐÇÏ±â À§ÇÑ Object º¯¼ö. °¢ SessionÀÇ »ý¼ºÀÚ¿¡¼­ this Æ÷ÀÎÅÍ·Î ÃÊ±âÈ­½ÃÄÑÁÝ´Ï´Ù.
+	// ê°œì²´ë¥¼ êµ¬ë¶„í•˜ê¸° ìœ„í•œ Object ë³€ìˆ˜. ê° Sessionì˜ ìƒì„±ìžì—ì„œ this í¬ì¸í„°ë¡œ ì´ˆê¸°í™”ì‹œì¼œì¤ë‹ˆë‹¤.
 	void* Object = nullptr; 
 };
 
@@ -45,25 +45,25 @@ public:
 	bool TCPCreateSocket();
 
 protected:
-	// Å¬¶óÀÌ¾ðÆ®¿Í ¿¬°áµÉ ¼ÒÄÏÀÔ´Ï´Ù.
+	// í´ë¼ì´ì–¸íŠ¸ì™€ ì—°ê²°ë  ì†Œì¼“ìž…ë‹ˆë‹¤.
 	SOCKET ConnSocket;
 
-	// Overlapped ±¸Á¶Ã¼
+	// Overlapped êµ¬ì¡°ì²´
 	FOverlappedEx ReadOverlapped = {};
 	FOverlappedEx WriteOverlapped = {};
 	FOverlappedEx AcceptOverlapped = {};
 
 	// Packet
 	FPacket* ConnPacket;
-	// ÆÐÅ¶ÀÇ °íÀ¯ ¹øÈ£
+	// íŒ¨í‚·ì˜ ê³ ìœ  ë²ˆí˜¸
 	DWORD PacketNumber = 0;
-	// ÆÐÅ¶ÀÇ Á¾·ù
+	// íŒ¨í‚·ì˜ ì¢…ë¥˜
 	DWORD Protocol = EPACKET_TYPE::NONE;
 
 	// Buffer
 	char recvBuffer[BUFSIZE] = {};
 
-	// ÃÑ ÆÐÅ¶ ±æÀÌ -> Àü´ÞµÇ´Â ÆÐÅ¶Çì´õ Æ÷ÇÔÇÑ ¸ðµç µ¥ÀÌÅÍÀÇ ±æÀÌ
+	// ì´ íŒ¨í‚· ê¸¸ì´ -> ì „ë‹¬ë˜ëŠ” íŒ¨í‚·í—¤ë” í¬í•¨í•œ ëª¨ë“  ë°ì´í„°ì˜ ê¸¸ì´
 	DWORD DataSize = 0;	
 };
 

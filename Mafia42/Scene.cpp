@@ -22,7 +22,7 @@ void Scene::ChatUpdate()
 	{
 		::GetWindowText(hEditHandle, RecvBuffer, BUFSIZE);
 
-		// Ã¤ÆÃ ÀÔ·ÂÇÑ ¹öÆÛ¿¡ ±ÛÀÚ°¡ ÀûÇôÀÖ¾î¾ßµÊ
+		// ì±„íŒ… ìž…ë ¥í•œ ë²„í¼ì— ê¸€ìžê°€ ì í˜€ìžˆì–´ì•¼ë¨
 		if (wcscmp(RecvBuffer, L"") != 0)
 		{
 			// WCHAR to char
@@ -30,7 +30,7 @@ void Scene::ChatUpdate()
 			char* charSendBuffer = new char[StrSize];
 			WideCharToMultiByte(CP_ACP, 0, RecvBuffer, -1, charSendBuffer, StrSize, 0, 0);
 
-			// Packet ¸¸µé¾î¼­ Àü¼Û
+			// Packet ë§Œë“¤ì–´ì„œ ì „ì†¡
 			PacketSession* TempSession = GET_SINGLE(ClientIocpManager)->GetSession();
 			if (TempSession && TempSession->CreatePacket(EPACKET_TYPE::CHAT, (BYTE*)charSendBuffer, StrSize) != false)
 			{

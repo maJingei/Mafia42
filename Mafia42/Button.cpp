@@ -24,7 +24,7 @@ void Button::Update()
 	POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	// 0.2ms ÀÌ»ó ³Ñ¾î°¡¸é default »óÅÂ·Î ³Ñ¾î°¨ Å¬¸¯ ³¡³­´Ù´Â ¶æ
+	// 0.2ms ì´ìƒ ë„˜ì–´ê°€ë©´ default ìƒíƒœë¡œ ë„˜ì–´ê° í´ë¦­ ëë‚œë‹¤ëŠ” ëœ»
 	if (_state == BS_Clicked)
 	{
 		_sumTime += deltaTime;
@@ -35,17 +35,17 @@ void Button::Update()
 		}
 	}
 
-	// ¸¶¿ì½º°¡ ¹öÆ° ¾È¿¡ ÀÖÀ¸¸é
+	// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ ì•ˆì— ìˆìœ¼ë©´
 	if (IsMouseInRect())
 	{
-		// OnPressed »óÅÂ
+		// OnPressed ìƒíƒœ
 		if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
 		{
 			SetButtonState(BS_Pressed);
 		}
 		else
 		{
-			// Pressed »óÅÂ¿´À¸¸é Å¬¸¯ÀÓ
+			// Pressed ìƒíƒœì˜€ìœ¼ë©´ í´ë¦­ì„
 			if (_state == BS_Pressed)
 			{
 				SetButtonState(BS_Clicked);
@@ -79,7 +79,7 @@ void Button::Render(HDC hdc)
 	else
 	{
 		RECT rect = { 200, 200 };
-		// TODO : Render ½ÇÆĞ
+		// TODO : Render ì‹¤íŒ¨
 		::DrawText(hdc, L"Faild", 5, &rect, DT_CENTER);
 	}
 }

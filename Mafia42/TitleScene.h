@@ -18,7 +18,7 @@ public:
 
 public:
 	HWND hEditHandle = {};
-	// UI ¸ğÀ½ÀÔ´Ï´Ù.
+	// UI ëª¨ìŒì…ë‹ˆë‹¤.
 	vector<UI*> UIObjects;
 	WCHAR RecvBuffer[BUFSIZE] = {};
 };

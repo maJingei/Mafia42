@@ -17,7 +17,7 @@ bool PacketSession::CreatePacket(DWORD protocol, const BYTE* packet, DWORD dataL
 		return false;
 	}
 
-	// ¾²±â Àü¿¡ ¸ÕÀú ¹Ð¾îÁÖ°í
+	// ì“°ê¸° ì „ì— ë¨¼ì € ë°€ì–´ì£¼ê³ 
 	ConnPacket->header.packetLength = 0;
 	ConnPacket->header.packetNum = 0;
 	ConnPacket->header.protocol = EPACKET_TYPE::NONE;
@@ -25,17 +25,17 @@ bool PacketSession::CreatePacket(DWORD protocol, const BYTE* packet, DWORD dataL
 	DataSize = 0;
 
 
-	// ÆÐÅ¶ ³Ñ¹ö Áõ°¡½ÃÅ°°í (TODO : ³ªÁß¿¡´Â ÀÌ PacketNumber·Î ÆÐÅ¶ÀÇ À¯È¿¼ºÀ» °Ë»çÇÒ ¼ö ÀÖ°Ú½À´Ï´Ù.) 
+	// íŒ¨í‚· ë„˜ë²„ ì¦ê°€ì‹œí‚¤ê³  (TODO : ë‚˜ì¤‘ì—ëŠ” ì´ PacketNumberë¡œ íŒ¨í‚·ì˜ ìœ íš¨ì„±ì„ ê²€ì‚¬í•  ìˆ˜ ìžˆê² ìŠµë‹ˆë‹¤.) 
 	PacketNumber++;
 
-	// µ¥ÀÌÅÍ´Â ±æÀÌ(4byte) | packetNum(4byte) | protocol(4byte) | Data(~) ·Î ±¸¼ºµÇ¾î ÀÖ½À´Ï´Ù.
+	// ë°ì´í„°ëŠ” ê¸¸ì´(4byte) | packetNum(4byte) | protocol(4byte) | Data(~) ë¡œ êµ¬ì„±ë˜ì–´ ìžˆìŠµë‹ˆë‹¤.
 	DataSize = sizeof(FPacketHeader) + dataLen;
 	ConnPacket->header.packetLength = ::htonl(sizeof(FPacketHeader) + dataLen);
 	ConnPacket->header.packetNum = ::htonl(PacketNumber);
 	ConnPacket->header.protocol = ::htonl(protocol);
 	CopyMemory(ConnPacket->ConnectBuffer, packet, dataLen);
 
-	// ¿©±â±îÁö ÆÐÅ¶ ¿Ï¼º !
+	// ì—¬ê¸°ê¹Œì§€ íŒ¨í‚· ì™„ì„± !
 
 	return true;
 }
@@ -55,7 +55,7 @@ bool PacketSession::Connect(SOCKADDR_IN address)
 
 	if (result == SOCKET_ERROR)
 	{
-		cout << "ConnectEx ÇÔ¼ö ¸Þ¸ð¸® ·Îµå ½ÇÆÐ" << endl;
+		cout << "ConnectEx í•¨ìˆ˜ ë©”ëª¨ë¦¬ ë¡œë“œ ì‹¤íŒ¨" << endl;
 		End();
 		return false;
 	}
@@ -70,7 +70,7 @@ bool PacketSession::Connect(SOCKADDR_IN address)
 
 		if (errorCode == WSAEISCONN)
 		{
-			return false; // ÀÌ¹Ì ¿¬°áµÇ¾î ÀÖÀ½
+			return false; // ì´ë¯¸ ì—°ê²°ë˜ì–´ ìžˆìŒ
 		}
 
 		if (errorCode != ERROR_IO_PENDING && errorCode != WSAEWOULDBLOCK)
